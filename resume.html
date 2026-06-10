@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Rivera - CV Portfolio</title>
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font families setup -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            space: ['"Space Grotesk"', 'sans-serif'],
+            serif: ['Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0A0B0E;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: white !important;
+        color: black !important;
+      }
+      #cv-page {
+        display: block !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      #portfolio-page {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 antialiased flex flex-col">
+
+  <!-- Interactive top notification & control bar -->
+  <header class="no-print bg-[#0e1016]/95 border-b border-white/5 h-16 sticky top-0 z-30 flex items-center justify-between px-6 lg:px-12 backdrop-blur-md">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-gradient-to-tr from-indigo-500 to-blue-600 flex items-center justify-center font-bold text-white text-xs">
+        CV
+      </div>
+      <div>
+        <span class="text-sm font-bold tracking-tight text-white">Alex Rivera</span>
+        <span class="text-[9px] text-slate-500 font-mono block -mt-1 uppercase tracking-wider">STANDALONE HTML EXPORT</span>
+      </div>
+    </div>
+
+    <!-- Active render selection toggle buttons -->
+    <div class="flex items-center gap-1 bg-white/5 border border-white/10 p-1 rounded-full text-xs">
+      <button 
+        id="btn-portfolio"
+        onclick="switchView('portfolio')" 
+        class="px-3.5 py-1.5 rounded-full font-semibold transition-all flex items-center gap-1.5 bg-indigo-600 text-white"
+      >
+        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        Web Portfolio
+      </button>
+      <button 
+        id="btn-cv"
+        onclick="switchView('cv')" 
+        class="px-3.5 py-1.5 rounded-full font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white"
+      >
+        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Printable Resume
+      </button>
+    </div>
+
+    <div>
+      <button 
+        onclick="window.print()" 
+        class="bg-white hover:bg-slate-200 text-black px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow"
+      >
+        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+        <span>Print PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Content Containers -->
+  <main class="flex-1 flex flex-col items-center">
+
+    <!-- 1. INTERACTIVE HUB PORTFOLIO PAGE -->
+    <section id="portfolio-page" class="w-full max-w-5xl mx-auto px-6 py-12 space-y-16">
+      
+      <!-- Hero Intro Block -->
+      <div class="relative py-12 border-b border-slate-850 text-center sm:text-left flex flex-col sm:flex-row items-center gap-8 animate-fade-in">
+        <div class="relative shrink-0">
+          <div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-indigo-500 to-blue-500 blur opacity-30"></div>
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=250&auto=format&fit=crop" alt="Alex Rivera" class="relative w-28 h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-slate-900 shadow-xl" />
+        </div>
+        <div class="flex-1 space-y-4">
+          <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-mono">
+            💻 Ready for Work
+          </div>
+          <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white font-space">
+            Alex Rivera
+          </h2>
+          <p class="text-lg sm:text-xl text-slate-300 font-medium tracking-wide">
+            Senior Full Stack Engineer
+          </p>
+          <p class="text-sm sm:text-base text-slate-400 max-w-2xl leading-relaxed">
+            Strategic, action-oriented software engineer with 6+ years of experience leading high-scale product development. Specializes in building elegant React frontends powered by reliable Node.js microservices. Focused on clean architecture, optimal web performance, and mentoring junior talent.
+          </p>
+          
+          <div class="flex flex-wrap justify-center sm:justify-start gap-4 text-xs font-mono pt-2">
+            <a href="mailto:alex.rivera@example.com" class="text-slate-400 hover:text-white transition-colors bg-slate-900 px-3.5 py-2 rounded-lg border border-slate-800 flex items-center gap-2"><span>alex.rivera@example.com</span></a>
+            <div class="text-slate-400 bg-slate-900 px-3.5 py-2 rounded-lg border border-slate-800 flex items-center gap-2"><span>📍 San Francisco, CA</span></div>
+            <a href="https://github.com/alexrivera" target="_blank" class="text-cyan-400 hover:text-cyan-300 transition-colors bg-slate-900 px-3.5 py-2 rounded-lg border border-slate-800 flex items-center gap-2"><span>📂 GitHub</span></a>
+            <a href="https://linkedin.com/in/alex-rivera-dev" target="_blank" class="text-cyan-400 hover:text-cyan-300 transition-colors bg-slate-900 px-3.5 py-2 rounded-lg border border-slate-800 flex items-center gap-2"><span>👔 LinkedIn</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Columns Portfolio block -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Left details list -->
+        <div class="lg:col-span-8 space-y-12">
+          
+          <!-- Experience timeline -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-bold uppercase tracking-wider font-space text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded bg-indigo-500 inline-block"></span>
+              Professional History
+            </h3>
+            <div class="space-y-6">
+              <div class="relative pl-6 pb-6 border-l border-slate-805 last:pb-0">
+                <div class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-indigo-500 ring-4 ring-indigo-950"></div>
+                <div class="flex flex-wrap justify-between items-baseline gap-2 mb-1">
+                  <h4 class="text-sm font-semibold text-white tracking-wide">Senior Software Engineer <span class="text-indigo-400">@ Stripe</span></h4>
+                  <span class="text-[11px] text-slate-500 font-mono">2023-03 - Present</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-2">San Francisco, CA (Hybrid)</p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-400 text-xs sm:text-sm">
+                  <li>Architected and deployed a multi-region onboarding flow, reducing application drop-offs by 14% and boosting conversion rates.</li>
+                  <li>Refactored heavy client-side transaction visualizers, bringing Core Web Vitals to a 98+ score and cutting memory usage by 40%.</li>
+                  <li>Managed a team of 4 engineers to deliver an updated API billing component, processing over $3M in volume daily.</li>
+                  <li>Created an internal design token system, standardizing components across three critical full-stack merchant dashboards.</li>
+                </ul>
+              </div>
+              <div class="relative pl-6 pb-6 border-l border-slate-805 last:pb-0">
+                <div class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-indigo-500 ring-4 ring-indigo-950"></div>
+                <div class="flex flex-wrap justify-between items-baseline gap-2 mb-1">
+                  <h4 class="text-sm font-semibold text-white tracking-wide">Software Engineer II <span class="text-indigo-400">@ Vercel</span></h4>
+                  <span class="text-[11px] text-slate-500 font-mono">2021-02 - 2023-02</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-2">Remote</p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-400 text-xs sm:text-sm">
+                  <li>Led developer experience improvements for Serverless Function loggers, speeding up log retrieval times by 3x.</li>
+                  <li>Co-authored community starter kits for Next.js, used by over 50,000 developers globally to boot up secure headless CMS web apps.</li>
+                  <li>Optimized Webpack configurations and transitioned core apps to Turbopack, accelerating hot-reload cycles for developers by 45%.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projects grid -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-bold uppercase tracking-wider font-space text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded bg-indigo-500 inline-block"></span>
+              Engineering Projects
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="group border border-slate-850 rounded-xl bg-slate-950/40 p-5 hover:border-indigo-500/30 transition-all duration-300">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">Omni-Query Engine</h4>
+                  <div class="flex gap-2.5">
+                    <a href="https://github.com/alexrivera/omni-query" target="_blank" class="text-slate-500 hover:text-white transition-colors"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>
+                    <a href="https://query-engine.dev" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-colors"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="m10 14 11-11"/></svg></a>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed mb-4">A fast, open-source GraphQL parsing engine that aggregates multi-source database queries, offering instant live caching and deduplication of parallel queries.</p>
+                <div class="flex flex-wrap gap-1">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">TypeScript</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">GraphQL</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">Redis</span>
+                </div>
+              </div>
+              <div class="group border border-slate-850 rounded-xl bg-slate-950/40 p-5 hover:border-indigo-500/30 transition-all duration-300">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">Tailwind UI Bento</h4>
+                  <div class="flex gap-2.5">
+                    <a href="https://github.com/alexrivera/tailwind-bento" target="_blank" class="text-slate-500 hover:text-white transition-colors"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>
+                    <a href="https://bento-builder.net" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-colors"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="m10 14 11-11"/></svg></a>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed mb-4">A comprehensive design system layout creator helper that automatically adjusts layout modules dynamically depending on drag-and-drop hierarchy.</p>
+                <div class="flex flex-wrap gap-1">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">React</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">Tailwind</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">Canvas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <!-- Right specs section -->
+        <div class="lg:col-span-4 space-y-8">
+          
+          <!-- Tech Stack skills -->
+          <div class="space-y-4 border border-slate-800 rounded-2xl bg-slate-950/20 p-6">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-white">SKILL SET MATRIX</h3>
+            <div class="flex flex-wrap gap-1.5 font-mono">
+              <span class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">TypeScript</span>
+              <span class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">React / Next.js</span>
+              <span class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Tailwind CSS</span>
+              <span class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Node.js / Express</span>
+              <span class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Rust</span>
+              <span class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">PostgreSQL</span>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-white">EDUCATION DEGREE</h3>
+            <div class="space-y-3">
+              <div class="border border-slate-850 rounded-lg p-4 bg-slate-950/30">
+                <div class="flex justify-between items-baseline mb-1">
+                  <h5 class="text-sm font-bold text-white">Master of Science in Computer Science</h5>
+                  <span class="text-[10px] text-slate-500 font-mono">2018-09 - 2020-06</span>
+                </div>
+                <p class="text-xs text-slate-400">Stanford University, Stanford, CA</p>
+                <p class="text-[10px] text-slate-500 mt-1 italic">GPA 3.9</p>
+              </div>
+              <div class="border border-slate-850 rounded-lg p-4 bg-slate-950/30">
+                <div class="flex justify-between items-baseline mb-1">
+                  <h5 class="text-sm font-bold text-white">Bachelor of Science in EECS</h5>
+                  <span class="text-[10px] text-slate-500 font-mono">2014-09 - 2018-05</span>
+                </div>
+                <p class="text-xs text-slate-400">UC Berkeley, Berkeley, CA</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certifications/Languages list -->
+          <div class="space-y-3 border border-slate-800 rounded-xl p-5 bg-slate-950/10">
+            <span class="text-xs text-slate-400 font-bold block uppercase tracking-wider">CERTIFICATES & BADGES</span>
+            <ul class="text-xs space-y-3 font-mono text-slate-300">
+              <li class="border-b border-slate-900 pb-2 last:border-none">
+                <p class="font-bold text-white">AWS Certified Solutions Architect – Professional</p>
+                <p class="text-[10px] text-slate-550">Amazon Web Services (2024-04)</p>
+              </li>
+              <li class="border-b border-slate-900 pb-2 last:border-none">
+                <p class="font-bold text-white">Certified ScrumMaster (CSM)</p>
+                <p class="text-[10px] text-slate-550">Scrum Alliance (2022-11)</p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="space-y-3">
+            <span class="text-xs text-slate-400 font-bold block uppercase tracking-wider">LANGUAGES spoken</span>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-slate-900 border border-slate-800 p-2.5 rounded">
+                <p class="font-bold text-white">English</p>
+                <p class="text-[10px] text-slate-500">Native</p>
+              </div>
+              <div class="bg-slate-900 border border-slate-800 p-2.5 rounded">
+                <p class="font-bold text-white">Spanish</p>
+                <p class="text-[10px] text-slate-500">Fluent</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. HIGH FIDELITY PRINTABLE RESUME PAGE -->
+    <section id="cv-page" class="hidden w-full max-w-[850px] mx-auto px-4 sm:px-8 py-8 md:py-12">
+      <div class="bg-white text-slate-900 rounded-2xl shadow-2xl overflow-hidden p-8 sm:p-12 font-sans border border-slate-200 min-h-[1050px]">
+        
+        <!-- Header module -->
+        <div class="border-b pb-6 mb-6">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=250&auto=format&fit=crop" alt="Alex Rivera" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-indigo-600 shadow-md shrink-0" />
+            <div class="flex-1 w-full text-center sm:text-left">
+              <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-3">
+                <div>
+                  <h1 class="text-3xl font-bold tracking-tight text-slate-900">Alex Rivera</h1>
+                  <p class="text-lg font-medium mt-1 text-indigo-600">Senior Full Stack Engineer</p>
+                </div>
+                <div class="flex flex-wrap gap-y-1 gap-x-3.5 text-xs text-slate-500 max-w-sm lg:text-right lg:justify-end justify-center sm:justify-start">
+                  <span class="flex items-center gap-1.5"><a href="mailto:alex.rivera@example.com" class="hover:underline">alex.rivera@example.com</a></span>
+                  <span>📍 San Francisco, CA</span>
+                  <span><a href="https://github.com/alexrivera" target="_blank" class="hover:underline">GitHub</a></span>
+                  <span><a href="https://linkedin.com/in/alex-rivera-dev" target="_blank" class="hover:underline">LinkedIn</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="mt-4 text-slate-600 leading-relaxed text-sm italic border-l-2 pl-4 border-slate-200">
+            Strategic, action-oriented software engineer with 6+ years of experience leading high-scale product development. Specializes in building elegant React frontends powered by reliable Node.js microservices. Focused on clean architecture, optimal web performance, and mentoring junior talent.
+          </p>
+        </div>
+
+        <!-- Main Body Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div class="md:col-span-8 space-y-6">
+            <div class="mb-6">
+              <h2 class="font-mono border-b text-slate-900 text-md font-bold tracking-wider uppercase pb-1.5 mb-4">Professional Experience</h2>
+              <div class="space-y-4">
+                <div>
+                  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <div>
+                      <span class="font-bold text-slate-900 text-sm">Senior Software Engineer</span>
+                      <span class="text-slate-400 mx-1.5">•</span>
+                      <span class="font-semibold text-slate-700 text-sm">Stripe</span>
+                    </div>
+                    <span class="text-xs text-slate-500 whitespace-nowrap">2023-03 – Present</span>
+                  </div>
+                  <ul class="list-disc pl-5 text-xs sm:text-sm text-slate-600 space-y-1">
+                    <li>Architected and deployed a multi-region onboarding flow, reducing application drop-offs by 14% and boosting conversion rates.</li>
+                    <li>Refactored heavy client-side transaction visualizers, bringing Core Web Vitals to a 98+ score and cutting memory usage by 40%.</li>
+                    <li>Managed a team of 4 engineers to deliver an updated API billing component, processing over $3M in volume daily.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-span-4 space-y-6">
+            <div>
+              <h2 class="font-mono border-b text-slate-900 text-md font-bold tracking-wider uppercase pb-1.5 mb-3">Core Key Skillset</h2>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-xs px-2 py-0.5 rounded font-medium border border-slate-200 bg-slate-50 text-slate-700">TypeScript</span>
+                <span class="text-xs px-2 py-0.5 rounded font-medium border border-slate-200 bg-slate-50 text-slate-700">React</span>
+                <span class="text-xs px-2 py-0.5 rounded font-medium border border-slate-200 bg-slate-50 text-slate-700">Node.js</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive visual UI controller script -->
+  <script>
+    function switchView(tab) {
+      const portPage = document.getElementById('portfolio-page');
+      const cvPage = document.getElementById('cv-page');
+      
+      const btnPort = document.getElementById('btn-portfolio');
+      const btnCV = document.getElementById('btn-cv');
+      
+      if (tab === 'portfolio') {
+        portPage.style.display = 'block';
+        cvPage.classList.add('hidden');
+        cvPage.style.display = 'none';
+        
+        btnPort.className = "px-3.5 py-1.5 rounded-full font-semibold transition-all flex items-center gap-1.5 bg-indigo-650 text-white";
+        btnCV.className = "px-3.5 py-1.5 rounded-full font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
+      } else {
+        portPage.style.display = 'none';
+        cvPage.classList.remove('hidden');
+        cvPage.style.display = 'block';
+        
+        btnPort.className = "px-3.5 py-1.5 rounded-full font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
+        btnCV.className = "px-3.5 py-1.5 rounded-full font-semibold transition-all flex items-center gap-1.5 bg-indigo-650 text-white";
+      }
+    }
+  </script>
+</body>
+</html>

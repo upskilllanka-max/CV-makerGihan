@@ -1,0 +1,6 @@
+{
+  "name": "Resume & Portfolio Generator",
+  "description": "Create professional CVs and responsive portfolio sites with real-time editing, customizable modern templates, and AI-powered formatting and copy assisting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CraftCV - Premium CV & Portfolio Builder</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Typography Fonts Support -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;605&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            space: ['"Space Grotesk"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.15);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.3);
+    }
+
+    body {
+      background-color: #050608;
+    }
+
+    /* Print styling rules */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0 !important; /* Strict border margin for alignment */
+      }
+      html, body {
+        background-color: white !important;
+        color: black !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        overflow: hidden !important;
+        display: block !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+      #print-area {
+        display: block !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        background-color: white !important;
+        position: relative !important;
+        overflow: hidden !important;
+        page-break-inside: avoid !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
+      }
+      #print-area > div {
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        overflow: hidden !important;
+        page-break-inside: avoid !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
+      }
+      .page-break {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 antialiased flex flex-col font-sans">
+
+  <!-- TOP BRANDING BAR -->
+  <header class="no-print bg-[#0a0d14]/90 border-b border-white/5 h-16 sticky top-0 z-40 flex items-center justify-between px-4 lg:px-8 backdrop-blur-md">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-505 to-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/10 tracking-wider">
+        CC
+      </div>
+      <div>
+        <h1 class="text-sm font-extrabold tracking-tight text-white block">CraftCV</h1>
+        <span class="text-[9px] text-slate-500 font-mono block -mt-1 uppercase tracking-widest font-bold">Studio Builder Edition</span>
+      </div>
+    </div>
+
+    <!-- Live Preview Controllers -->
+    <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-xs text-slate-200">
+      <svg class="w-3.5 h-3.5 text-indigo-400" xmlns="http://www.w3.org/2500/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span class="font-semibold text-[11px] uppercase tracking-wider font-mono">Printable A4 Resume Mode</span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Fast sample trigger -->
+      <button 
+        onclick="loadSampleData()" 
+        class="bg-white/5 hover:bg-white/10 text-slate-300 font-semibold px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer border border-white/5"
+      >
+        Sample Data
+      </button>
+      <button 
+        onclick="triggerPrint()" 
+        class="bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border border-white/10 cursor-pointer"
+      >
+        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+        <span>Print & Save PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- WORKSPACE WRAPPER -->
+  <div class="no-print flex-1 flex flex-col lg:flex-row overflow-hidden">
+    
+    <!-- LEFT EDITOR COLUMN: Form Builder Controls -->
+    <aside class="no-print w-full lg:w-[480px] shrink-0 bg-[#07090f] border-r border-white/5 flex flex-col overflow-y-auto">
+      
+      <!-- Setting Customize Widget Bar -->
+      <div class="p-5 border-b border-white/5 space-y-4">
+        <div>
+          <span class="text-[9px] text-slate-500 font-mono block uppercase tracking-widest font-bold">1. CUSTOM STYLE SETTINGS</span>
+          <h2 class="text-xs font-bold text-white tracking-wide uppercase mt-0.5">Accent Color & Templates</h2>
+        </div>
+        
+        <!-- Controls Rows -->
+        <div class="grid grid-cols-3 gap-2.5 text-xs">
+          <!-- Template Dropdown -->
+          <div class="space-y-1">
+            <label class="text-[9px] text-slate-400 font-mono font-bold uppercase block truncate" title="Resume Template">Template</label>
+            <select 
+              id="setting-template" 
+              onchange="updateStyleSetting('templateId', this.value)" 
+              class="w-full bg-slate-900 border border-white/10 rounded-lg py-1 px-1.5 text-slate-300 font-medium text-[11px] focus:border-indigo-500 focus:outline-none"
+            >
+              <option value="slate-professional">Slate Prof.</option>
+              <option value="minimalist-tech">Mini Tech</option>
+              <option value="executive-serif">Executive</option>
+              <option value="creative-gradient">Creative Split</option>
+            </select>
+          </div>
+
+          <!-- Font Choice Dropdown -->
+          <div class="space-y-1">
+            <label class="text-[9px] text-slate-400 font-mono font-bold uppercase block truncate" title="Typography Font">Typography</label>
+            <select 
+              id="setting-font" 
+              onchange="updateStyleSetting('fontFamily', this.value)" 
+              class="w-full bg-slate-900 border border-white/10 rounded-lg py-1 px-1.5 text-slate-300 font-medium text-[11px] focus:border-indigo-500 focus:outline-none"
+            >
+              <option value="Inter">Inter (Sans)</option>
+              <option value="Space Grotesk">Space (Tech)</option>
+              <option value="Playfair Display">Playfair (Serif)</option>
+              <option value="JetBrains Mono">JetBrains (Mono)</option>
+            </select>
+          </div>
+
+          <!-- Packing Spacing Density Dropdown -->
+          <div class="space-y-1">
+            <label class="text-[9px] text-slate-400 font-mono font-bold uppercase block truncate" title="Print Spacing Density">Print Spacing</label>
+            <select 
+              id="setting-density" 
+              onchange="updateStyleSetting('density', this.value)" 
+              class="w-full bg-slate-900 border border-white/10 rounded-lg py-1 px-1.5 text-emerald-400 font-bold text-[11px] focus:border-indigo-500 focus:outline-none"
+            >
+              <option value="standard">Comfortable</option>
+              <option value="compact" selected>Compact (Fit)</option>
+              <option value="ultra">Ultra-Fit (1-Pg)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Color Palette Picker -->
+        <div class="space-y-1.5 pt-1">
+          <label class="text-[10px] text-slate-400 font-mono font-bold uppercase block">Accent Theme Color</label>
+          <div class="flex items-center gap-2.5">
+            <button onclick="updateStyleSetting('accentColor', 'indigo')" class="w-6 h-6 rounded-full bg-indigo-600 border-2 border-slate-900 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-md" title="Indigo"></button>
+            <button onclick="updateStyleSetting('accentColor', 'emerald')" class="w-6 h-6 rounded-full bg-emerald-600 border-2 border-slate-900 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-md" title="Emerald"></button>
+            <button onclick="updateStyleSetting('accentColor', 'rose')" class="w-6 h-6 rounded-full bg-rose-600 border-2 border-slate-900 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-md" title="Rose"></button>
+            <button onclick="updateStyleSetting('accentColor', 'sky')" class="w-6 h-6 rounded-full bg-sky-600 border-2 border-slate-900 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-md" title="Sky Blue"></button>
+            <button onclick="updateStyleSetting('accentColor', 'amber')" class="w-6 h-6 rounded-full bg-amber-600 border-2 border-slate-900 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-md" title="Warm Amber"></button>
+            <button onclick="updateStyleSetting('accentColor', 'slate')" class="w-6 h-6 rounded-full bg-slate-600 border-2 border-slate-900 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-md" title="Charcoal Slate"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN TABS FOR FORMS -->
+      <div id="accordion-container" class="p-5 space-y-4">
+        
+        <!-- SECTION 1: PERSONAL DETAILS -->
+        <div class="border border-white/5 bg-white/[0.01] rounded-xl overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('panel-personal')" class="w-full text-left px-4 py-3.5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-400">👤</span>
+              <span class="text-xs font-bold tracking-wider uppercase font-mono text-white">1. Personal Information</span>
+            </div>
+            <span class="text-slate-500 font-mono text-xs">▼</span>
+          </button>
+          
+          <div id="panel-personal" class="p-4 space-y-3 border-t border-white/5">
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Full Name</label>
+                <input type="text" id="input-fullName" oninput="updatePersonalField('fullName', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. Alex Rivera">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Professional Title</label>
+                <input type="text" id="input-title" oninput="updatePersonalField('title', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. Senior Software Engineer">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Email Address</label>
+                <input type="email" id="input-email" oninput="updatePersonalField('email', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. name@example.com">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Phone Number</label>
+                <input type="text" id="input-phone" oninput="updatePersonalField('phone', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. +1 (555) 0192">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Location</label>
+                <input type="text" id="input-location" oninput="updatePersonalField('location', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. San Francisco, CA">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Portfolio URL</label>
+                <input type="text" id="input-portfolioUrl" oninput="updatePersonalField('portfolioUrl', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. https://myportfolio.com">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">LinkedIn Profile</label>
+                <input type="text" id="input-linkedinUrl" oninput="updatePersonalField('linkedinUrl', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. https://linkedin.com/in...">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">GitHub Profile</label>
+                <input type="text" id="input-githubUrl" oninput="updatePersonalField('githubUrl', this.value)" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="e.g. https://github.com/yourusername">
+              </div>
+            </div>
+
+            <!-- Profile Picture Section with Drag & Drop Uploader -->
+            <div class="space-y-2">
+              <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Profile Photo</label>
+              
+              <div 
+                id="photo-dropzone"
+                class="border-2 border-dashed border-white/10 hover:border-indigo-500/50 hover:bg-white/[0.02] active:bg-white/[0.04] transition-all rounded-xl p-4 text-center cursor-pointer group relative flex flex-col items-center justify-center gap-2"
+                onclick="document.getElementById('file-photo-upload').click()"
+              >
+                <input 
+                  type="file" 
+                  id="file-photo-upload" 
+                  accept="image/*" 
+                  class="hidden" 
+                  onchange="handlePhotoUpload(this.files)"
+                />
+                
+                <div id="dropzone-empty" class="space-y-1.5 py-2">
+                  <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mx-auto text-slate-400 group-hover:text-indigo-400 group-hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <p class="text-[11px] text-slate-300 font-medium">Drag & drop picture or <span class="text-indigo-450 font-bold underline">browse</span></p>
+                  <p class="text-[9px] text-slate-500 font-mono">Supports JPG, PNG, WebP (Square recommended)</p>
+                </div>
+
+                <div id="dropzone-preview" class="hidden flex items-center gap-3 w-full text-left bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                  <img id="uploaded-photo-thumbnail" class="w-11 h-11 rounded-lg object-cover bg-slate-800 border border-white/10" src="" alt="Thumbnail" />
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[11px] text-slate-200 font-bold truncate">Custom Image Active</p>
+                    <p class="text-[9px] text-emerald-400 font-mono">✓ Base64 synced</p>
+                  </div>
+                  <button 
+                    type="button"
+                    onclick="event.stopPropagation(); removeUploadedPhoto();" 
+                    class="p-1 px-2.5 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-450 text-[10px] font-bold transition-all cursor-pointer"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+              <div class="relative flex items-center py-1">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div class="w-full border-t border-white/5"></div>
+                </div>
+                <div class="relative flex justify-center text-[8px] font-mono text-slate-500 uppercase mx-auto px-2 bg-[#07090f]">
+                  or use dynamic URL
+                </div>
+              </div>
+
+              <input 
+                type="text" 
+                id="input-photoUrl" 
+                oninput="updatePersonalField('photoUrl', this.value); updatePhotoPreviewWidget();" 
+                class="w-full bg-slate-900 border border-white/5 rounded-lg py-1 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono" 
+                placeholder="https://images.unsplash.com/..."
+              >
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Professional Overview Summary</label>
+              <textarea id="input-summary" oninput="updatePersonalField('summary', this.value)" rows="4" class="w-full bg-slate-900 border border-white/5 rounded-lg py-1.5 px-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="Explain your core expert competencies and background summary..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: WORK EXPERIENCES -->
+        <div class="border border-white/5 bg-white/[0.01] rounded-xl overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('panel-experience')" class="w-full text-left px-4 py-3.5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-400">💼</span>
+              <span class="text-xs font-bold tracking-wider uppercase font-mono text-white">2. Work History Details</span>
+            </div>
+            <span class="text-slate-500 font-mono text-xs">▼</span>
+          </button>
+          
+          <div id="panel-experience" class="p-4 space-y-4 border-t border-white/5 hidden">
+            <!-- Dynamic experience container lists -->
+            <div id="list-experiences" class="space-y-3"></div>
+            
+            <button 
+              onclick="addNewExperience()" 
+              class="w-full bg-white/5 hover:bg-white/10 text-white py-2 rounded-lg text-xs font-bold border border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>+ Add Work Experience Position</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 3: KEY PROJECTS -->
+        <div class="border border-white/5 bg-white/[0.01] rounded-xl overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('panel-projects')" class="w-full text-left px-4 py-3.5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-400">🚀</span>
+              <span class="text-xs font-bold tracking-wider uppercase font-mono text-white">3. Engineering Projects</span>
+            </div>
+            <span class="text-slate-500 font-mono text-xs">▼</span>
+          </button>
+          
+          <div id="panel-projects" class="p-4 space-y-4 border-t border-white/5 hidden">
+            <!-- Dynamic projects lists -->
+            <div id="list-projects" class="space-y-3"></div>
+
+            <button 
+              onclick="addNewProject()" 
+              class="w-full bg-white/5 hover:bg-white/10 text-white py-2 rounded-lg text-xs font-bold border border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>+ Add Key Engineering Project</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 4: EDUCATIONS -->
+        <div class="border border-white/5 bg-white/[0.01] rounded-xl overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('panel-education')" class="w-full text-left px-4 py-3.5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-400">🎓</span>
+              <span class="text-xs font-bold tracking-wider uppercase font-mono text-white">4. Education History</span>
+            </div>
+            <span class="text-slate-500 font-mono text-xs">▼</span>
+          </button>
+          
+          <div id="panel-education" class="p-4 space-y-4 border-t border-white/5 hidden">
+            <!-- Dynamic education list -->
+            <div id="list-education" class="space-y-3"></div>
+
+            <button 
+              onclick="addNewEducation()" 
+              class="w-full bg-white/5 hover:bg-white/10 text-white py-2 rounded-lg text-xs font-bold border border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>+ Add Degree / School Record</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 5: KEYWORDS & SKILLS -->
+        <div class="border border-white/5 bg-white/[0.01] rounded-xl overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('panel-skills')" class="w-full text-left px-4 py-3.5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-400">⚡</span>
+              <span class="text-xs font-bold tracking-wider uppercase font-mono text-white">5. Core Skill Grid</span>
+            </div>
+            <span class="text-slate-500 font-mono text-xs">▼</span>
+          </button>
+          
+          <div id="panel-skills" class="p-4 space-y-3.5 border-t border-white/5 hidden">
+            <div class="space-y-1">
+              <label class="text-[10px] text-slate-400 uppercase font-bold font-mono">Skills (comma-separated list)</label>
+              <textarea 
+                id="input-skills" 
+                oninput="updateSkills(this.value)" 
+                rows="4" 
+                class="w-full bg-slate-900 border border-white/5 rounded-lg py-1.5 px-2.5 text-xs text-slate-205 focus:outline-none focus:border-indigo-500" 
+                placeholder="TypeScript, React, Node.js, Next.js, Rust, Docker, Kubernetes, AWS, PostgreSQL"></textarea>
+            </div>
+            <p class="text-[9px] text-slate-500 font-mono italic">Separate keywords with commas to build real elements automatically inside both themes.</p>
+          </div>
+        </div>
+
+        <!-- SECTION 6: LANGUAGES & CERTIFICATES -->
+        <div class="border border-white/5 bg-white/[0.01] rounded-xl overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('panel-extras')" class="w-full text-left px-4 py-3.5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-400">🎖️</span>
+              <span class="text-xs font-bold tracking-wider uppercase font-mono text-white">6. Languages & Certs</span>
+            </div>
+            <span class="text-slate-500 font-mono text-xs">▼</span>
+          </button>
+          
+          <div id="panel-extras" class="p-4 space-y-4 border-t border-white/5 hidden">
+            <!-- Certifications Module -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 class="text-[10px] text-slate-400 uppercase font-bold font-mono">Certifications</h4>
+              </div>
+              <div id="list-certifications" class="space-y-2"></div>
+              <button onclick="addNewCertification()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-white py-1.5 rounded cursor-pointer">+ Add Certificate</button>
+            </div>
+
+            <!-- Languages Module -->
+            <div class="space-y-2 pt-2 border-t border-white/5">
+              <div class="flex items-center justify-between">
+                <h4 class="text-[10px] text-slate-400 uppercase font-bold font-mono">Languages</h4>
+              </div>
+              <div id="list-languages" class="space-y-2"></div>
+              <button onclick="addNewLanguage()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-white py-1.5 rounded cursor-pointer">+ Add Language</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER / STATS -->
+      <div class="mt-auto p-5 border-t border-white/5 bg-[#050609]">
+        <div class="flex justify-between items-center text-[10px] text-slate-500 font-mono">
+          <span>ACTIVE SESSION BUNDLE</span>
+          <button onclick="resetDataToClean()" class="text-rose-500 hover:underline">Reset Clean</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT PREVIEW FRAME COLUMN -->
+    <main class="flex-1 flex flex-col bg-[#0b0d14] overflow-y-auto">
+      
+      <!-- Top mini control helper -->
+      <div class="no-print bg-slate-900/40 border-b border-white/5 px-6 py-2.5 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-xs text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Real-time Sync Active</span>
+        </div>
+        <div class="text-[10px] text-slate-500 font-mono">
+          Scroll to preview both responsive Desktop & Mobile layouts
+        </div>
+      </div>
+
+      <!-- LIVE PREVIEW CANVAS AREA -->
+      <div class="flex-1 p-6 lg:p-12 flex justify-center items-start">
+        
+        <!-- Live container with active display rendering -->
+        <div id="preview-frame" class="w-full max-w-5xl transition-all duration-300">
+          <!-- Content injected dynamically by JS -->
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- HIDDEN PRINT AREA FOR PRINT MEDIA CHECKS (Standard Print Engine Target) -->
+  <div id="print-area" class="hidden">
+    <!-- Clean Printable A4 injected here for screen printer driver bypass -->
+  </div>
+
+  <!-- CORE APPLICATION LOGIC ENGINES (VANILLA JAVASCRIPT STATE ENGINE) -->
+  <script>
+    // System configuration global maps
+    const colorsMap = {
+      indigo: {
+        primary: "indigo-600",
+        primaryText: "text-indigo-600",
+        bgBadge: "bg-indigo-50 border-indigo-200 text-indigo-600",
+        text: "text-indigo-600",
+        border: "border-indigo-600",
+        hoverBg: "hover:bg-indigo-50",
+        gradientFrom: "from-indigo-600",
+        gradientTo: "to-blue-600",
+        portfolioAccent: "indigo-505",
+        ringColor: "ring-indigo-500/30",
+        cvSectionHeader: "border-indigo-600",
+        bulletColor: "bg-indigo-500",
+      },
+      emerald: {
+        primary: "emerald-600",
+        primaryText: "text-emerald-600",
+        bgBadge: "bg-emerald-50 border-emerald-200 text-emerald-600",
+        text: "text-emerald-600",
+        border: "border-emerald-600",
+        hoverBg: "hover:bg-emerald-50",
+        gradientFrom: "from-emerald-600",
+        gradientTo: "to-teal-600",
+        portfolioAccent: "emerald-505",
+        ringColor: "ring-emerald-500/30",
+        cvSectionHeader: "border-emerald-600",
+        bulletColor: "bg-emerald-500",
+      },
+      rose: {
+        primary: "rose-600",
+        primaryText: "text-rose-600",
+        bgBadge: "bg-rose-50 border-rose-200 text-rose-600",
+        text: "text-rose-600",
+        border: "border-rose-600",
+        hoverBg: "hover:bg-rose-50",
+        gradientFrom: "from-rose-600",
+        gradientTo: "to-pink-600",
+        portfolioAccent: "rose-505",
+        ringColor: "ring-rose-500/30",
+        cvSectionHeader: "border-rose-600",
+        bulletColor: "bg-rose-500",
+      },
+      sky: {
+        primary: "sky-600",
+        primaryText: "text-sky-600",
+        bgBadge: "bg-sky-50 border-sky-200 text-sky-600",
+        text: "text-sky-600",
+        border: "border-sky-600",
+        hoverBg: "hover:bg-sky-50",
+        gradientFrom: "from-sky-600",
+        gradientTo: "to-indigo-600",
+        portfolioAccent: "sky-505",
+        ringColor: "ring-sky-500/30",
+        cvSectionHeader: "border-sky-600",
+        bulletColor: "bg-sky-500",
+      },
+      amber: {
+        primary: "amber-600",
+        primaryText: "text-amber-600",
+        bgBadge: "bg-amber-50 border-amber-200 text-amber-600",
+        text: "text-amber-600",
+        border: "border-amber-600",
+        hoverBg: "hover:bg-amber-50",
+        gradientFrom: "from-amber-600",
+        gradientTo: "to-orange-600",
+        portfolioAccent: "amber-505",
+        ringColor: "ring-amber-500/30",
+        cvSectionHeader: "border-amber-600",
+        bulletColor: "bg-amber-500",
+      },
+      slate: {
+        primary: "slate-705",
+        primaryText: "text-slate-700",
+        bgBadge: "bg-slate-100 border-slate-300 text-slate-700",
+        text: "text-slate-800",
+        border: "border-slate-800",
+        hoverBg: "hover:bg-slate-100",
+        gradientFrom: "from-slate-705",
+        gradientTo: "to-slate-900",
+        portfolioAccent: "slate-400",
+        ringColor: "ring-slate-500/30",
+        cvSectionHeader: "border-slate-800",
+        bulletColor: "bg-slate-650",
+      }
+    };
+
+    // Resume Print Spacing Density configs map
+    const densityMap = {
+      standard: {
+        containerPad: "p-8 sm:p-12",
+        spaceSection: "space-y-6",
+        spaceList: "space-y-3.5",
+        headerPad: "pb-5 mb-5",
+        titleSize: "text-3xl",
+        subTitleSize: "text-md sm:text-lg",
+        bodySize: "text-[13px] leading-relaxed",
+        bulletSize: "text-[13px]",
+        imgSize: "w-20 h-20 md:w-24 md:h-24",
+        sectionMar: "mb-4",
+        itemSpacing: "space-y-1.5",
+        printPadding: "padding: 18mm 20mm !important;"
+      },
+      compact: {
+        containerPad: "p-6 sm:p-8",
+        spaceSection: "space-y-4",
+        spaceList: "space-y-2.5",
+        headerPad: "pb-3 mb-3.5",
+        titleSize: "text-2xl",
+        subTitleSize: "text-sm sm:text-base",
+        bodySize: "text-[12px] leading-snug",
+        bulletSize: "text-[12px]",
+        imgSize: "w-16 h-16 md:w-20 md:h-20",
+        sectionMar: "mb-2.5",
+        itemSpacing: "space-y-1",
+        printPadding: "padding: 12mm 14mm !important;"
+      },
+      ultra: {
+        containerPad: "p-4 sm:p-6",
+        spaceSection: "space-y-2.5",
+        spaceList: "space-y-1.5",
+        headerPad: "pb-2 mb-2",
+        titleSize: "text-xl",
+        subTitleSize: "text-xs sm:text-sm",
+        bodySize: "text-[11px] leading-tight",
+        bulletSize: "text-[11px]",
+        imgSize: "w-12 h-12 md:w-14 md:h-14",
+        sectionMar: "mb-1.5",
+        itemSpacing: "space-y-0.5",
+        printPadding: "padding: 8mm 10mm !important;"
+      }
+    };
+
+    // drag-and-drop profile photo upload helpers
+    function initPhotoDropzone() {
+      const dropzone = document.getElementById("photo-dropzone");
+      if (!dropzone) return;
+
+      // Prevent default behaviors
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      // Highlight drop area
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, () => {
+          dropzone.classList.remove('border-white/10');
+          dropzone.classList.add('border-indigo-500', 'bg-indigo-505/5');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, () => {
+          dropzone.classList.add('border-white/10');
+          dropzone.classList.remove('border-indigo-500', 'bg-indigo-505/5');
+        }, false);
+      });
+
+      // Handle dropped files
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handlePhotoUpload(files);
+      }, false);
+    }
+
+    function handlePhotoUpload(files) {
+      if (!files || files.length === 0) return;
+      const file = files[0];
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file (PNG, JPG, WebP, etc.)');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Data = e.target.result;
+        updatePersonalField('photoUrl', base64Data);
+        // Sync input element in DOM
+        document.getElementById("input-photoUrl").value = base64Data;
+        updatePhotoPreviewWidget();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeUploadedPhoto() {
+      updatePersonalField('photoUrl', '');
+      document.getElementById("input-photoUrl").value = '';
+      updatePhotoPreviewWidget();
+    }
+
+    function updatePhotoPreviewWidget() {
+      const photoUrlVal = resumeData.personal.photoUrl;
+      const emptyDiv = document.getElementById("dropzone-empty");
+      const previewDiv = document.getElementById("dropzone-preview");
+      const thumbnail = document.getElementById("uploaded-photo-thumbnail");
+
+      if (!emptyDiv || !previewDiv) return;
+
+      if (photoUrlVal) {
+        emptyDiv.classList.add("hidden");
+        previewDiv.classList.remove("hidden");
+        if (thumbnail) thumbnail.src = photoUrlVal;
+      } else {
+        emptyDiv.classList.remove("hidden");
+        previewDiv.classList.add("hidden");
+        if (thumbnail) thumbnail.src = "";
+      }
+    }
+
+    // Main Applet Interactive States
+    let viewMode = "resume"; // Defaults strictly to CV Resume layout
+    let activeAndroidTab = "home"; // "home", "experience", "projects", "skills", "builder"
+    let activeAndroidTheme = "indigo"; // "indigo", "emerald", "rose", "sky", "amber"
+    let androidBuildProgress = -1; // -1 means idle, 0 to 100 progress
+    let androidBuildLogs = [];
+    let isAndroidSheetOpen = false;
+    let androidSheetContent = "";
+
+    let styleSettings = {
+      templateId: "slate-professional",
+      fontFamily: "Inter",
+      accentColor: "indigo",
+      density: "compact"
+    };
+
+    // User Data Object Structured Schema
+    let resumeData = {
+      personal: {
+        fullName: "",
+        title: "",
+        email: "",
+        phone: "",
+        location: "",
+        portfolioUrl: "",
+        linkedinUrl: "",
+        githubUrl: "",
+        summary: "",
+        photoUrl: ""
+      },
+      experiences: [],
+      projects: [],
+      education: [],
+      skills: [],
+      certifications: [],
+      languages: []
+    };
+
+    // Default Sample Data Boilerplate
+    const sampleResumeData = {
+      personal: {
+        fullName: "Alex Rivera",
+        title: "Senior Full Stack Dev & Designer",
+        email: "alex.rivera@example.com",
+        phone: "+1 (555) 0192-384",
+        location: "San Francisco, CA",
+        portfolioUrl: "https://alexrivera.dev",
+        linkedinUrl: "https://linkedin.com/in/alex-rivera-main",
+        githubUrl: "https://github.com/alexrivera",
+        summary: "Strategic, action-oriented software craftsman with over 6 years of experience leading cross-functional teams in high-scale web applet development. Expert in elegant React state systems, performant Node / Rust microservices, and design patterns. Passionate about beautiful interfaces and accessibility.",
+        photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=250&auto=format&fit=crop"
+      },
+      experiences: [
+        {
+          id: "exp-1",
+          company: "Stripe",
+          role: "Senior Software Engineer",
+          location: "San Francisco (Hybrid)",
+          startDate: "Jan 2023",
+          endDate: "Present",
+          current: true,
+          bullets: [
+            "Architected and deployed a multi-region onboarding pipeline flow, cutting conversion funnel drop-offs by 14%.",
+            "Refactored heavy transaction data visualizers using pure Canvas algorithms, optimizing performance directly on portable layouts.",
+            "Mentored and guided 4 junior engineers on production readiness, modern headless code architectures, and standard test practices."
+          ]
+        },
+        {
+          id: "exp-2",
+          company: "Vercel",
+          role: "Software Dev II",
+          location: "Remote (Global)",
+          startDate: "Mar 2021",
+          endDate: "Dec 2022",
+          current: false,
+          bullets: [
+            "Spearheaded developer experience log integrations resulting in a 40% speed up in log telemetry stream responses.",
+            "Co-authored three robust Next.js starters, accumulating over 60k downloads across public open-source registries."
+          ]
+        }
+      ],
+      projects: [
+        {
+          id: "proj-1",
+          title: "Omni-Query Cache Engine",
+          description: "A fast, lightweight database query optimizer parsing GraphQL schemas automatically to resolve cache hits under 5ms.",
+          link: "https://omni-query.io",
+          github: "https://github.com/alexrivera/omni-query",
+          technologies: "TypeScript, GraphQL, Redis, Rust"
+        },
+        {
+          id: "proj-2",
+          title: "Bento Builder Framework",
+          description: "An interactive, drag-and-drop React visual dashboard engine rendering modern grid portfolio cards instantly.",
+          link: "https://bento-builder.dev",
+          github: "https://github.com/alexrivera/bento-builder",
+          technologies: "React, CSS Grid, Tailwind"
+        }
+      ],
+      education: [
+        {
+          id: "edu-1",
+          institution: "Stanford University",
+          degree: "Master of Science",
+          fieldOfStudy: "Computer Science",
+          startDate: "Sep 2018",
+          endDate: "Jun 2020",
+          location: "Stanford, CA",
+          score: "GPA 3.9 / 4.0"
+        },
+        {
+          id: "edu-2",
+          institution: "University of California, Berkeley",
+          degree: "Bachelor of Science",
+          fieldOfStudy: "EECS",
+          startDate: "Sep 2014",
+          endDate: "May 2018",
+          location: "Berkeley, CA",
+          score: ""
+        }
+      ],
+      skills: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js", "Express", "Rust", "GraphQL", "Redis", "Docker", "AWS Solutions Architecture", "Figma Design"],
+      certifications: [
+        {
+          id: "cert-1",
+          name: "AWS Solutions Architect Professional",
+          issuer: "Amazon Web Services",
+          date: "May 2024"
+        },
+        {
+          id: "cert-2",
+          name: "Certified ScrumMaster (CSM)",
+          issuer: "Scrum Alliance",
+          date: "Nov 2022"
+        }
+      ],
+      languages: [
+        {
+          id: "lang-1",
+          name: "English",
+          proficiency: "Native / Bilingual"
+        },
+        {
+          id: "lang-2",
+          name: "Spanish",
+          proficiency: "Fluent Conversational"
+        }
+      ]
+    };
+
+    // Load state from localStorage or fallback
+    function initAppState() {
+      const storedData = localStorage.getItem("craftcv_resume_data");
+      const storedStyle = localStorage.getItem("craftcv_style_settings");
+      
+      if (storedData) {
+        resumeData = JSON.parse(storedData);
+      } else {
+        resumeData = JSON.parse(JSON.stringify(sampleResumeData));
+      }
+      
+      if (storedStyle) {
+        styleSettings = JSON.parse(storedStyle);
+        if (!styleSettings.density) styleSettings.density = "compact";
+      } else {
+        styleSettings = {
+          templateId: "slate-professional",
+          fontFamily: "Inter",
+          accentColor: "indigo",
+          density: "compact"
+        };
+      }
+      
+      // Update form values with active state
+      populateFormInputs();
+      
+      // Dynamic rendering cycle launch
+      renderFormLists();
+      renderPreview();
+      
+      // Initialize drag-and-drop dropzone listening
+      initPhotoDropzone();
+    }
+
+    // Write to LocalStorage
+    function saveToLocalStorage() {
+      localStorage.setItem("craftcv_resume_data", JSON.stringify(resumeData));
+      localStorage.setItem("craftcv_style_settings", JSON.stringify(styleSettings));
+    }
+
+    // Load boilerplate mock data directly
+    function loadSampleData() {
+      resumeData = JSON.parse(JSON.stringify(sampleResumeData));
+      saveToLocalStorage();
+      populateFormInputs();
+      renderFormLists();
+      renderPreview();
+    }
+
+    // Reset clean action
+    function resetDataToClean() {
+      resumeData = {
+        personal: {
+          fullName: "",
+          title: "",
+          email: "",
+          phone: "",
+          location: "",
+          portfolioUrl: "",
+          linkedinUrl: "",
+          githubUrl: "",
+          summary: "",
+          photoUrl: ""
+        },
+        experiences: [],
+        projects: [],
+        education: [],
+        skills: [],
+        certifications: [],
+        languages: []
+      };
+      saveToLocalStorage();
+      populateFormInputs();
+      renderFormLists();
+      renderPreview();
+    }
+
+    // Injects raw state value directly into the editor inputs
+    function populateFormInputs() {
+      const p = resumeData.personal;
+      document.getElementById("input-fullName").value = p.fullName || "";
+      document.getElementById("input-title").value = p.title || "";
+      document.getElementById("input-email").value = p.email || "";
+      document.getElementById("input-phone").value = p.phone || "";
+      document.getElementById("input-location").value = p.location || "";
+      document.getElementById("input-portfolioUrl").value = p.portfolioUrl || "";
+      document.getElementById("input-linkedinUrl").value = p.linkedinUrl || "";
+      document.getElementById("input-githubUrl").value = p.githubUrl || "";
+      document.getElementById("input-photoUrl").value = p.photoUrl || "";
+      document.getElementById("input-summary").value = p.summary || "";
+      document.getElementById("input-skills").value = resumeData.skills ? resumeData.skills.join(", ") : "";
+
+      document.getElementById("setting-template").value = styleSettings.templateId;
+      document.getElementById("setting-font").value = styleSettings.fontFamily;
+      document.getElementById("setting-density").value = styleSettings.density || "compact";
+
+      // Sync custom file drops state indicator
+      updatePhotoPreviewWidget();
+    }
+
+    // Accordion UI utility
+    function toggleAccordion(id) {
+      const panel = document.getElementById(id);
+      if (panel.classList.contains("hidden")) {
+        panel.classList.remove("hidden");
+      } else {
+        panel.classList.add("hidden");
+      }
+    }
+
+    // View layout switcher logic (strictly force resume)
+    function setViewMode(mode) {
+      viewMode = "resume";
+      renderPreview();
+    }
+
+    // Change Accent Theme Color or template instantly
+    function updateStyleSetting(key, val) {
+      styleSettings[key] = val;
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    // Update real personal string content value
+    function updatePersonalField(field, val) {
+      resumeData.personal[field] = val;
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    // Update skills tag list directly
+    function updateSkills(val) {
+      resumeData.skills = val.split(",").map(item => item.trim()).filter(Boolean);
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    // Standard Print execution cycle
+    function triggerPrint() {
+      // Prior to printing, let's render the Light printable mode directly into standard print helper div
+      const printableContent = generateClassicalCVHtml();
+      document.getElementById("print-area").innerHTML = printableContent;
+      window.print();
+    }
+
+    // Direct PDF generator download option using new-tab print bypass
+    function triggerDownloadPDF() {
+      const resumeHTML = generateClassicalCVHtml();
+      
+      const printDoc = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${resumeData.personal.fullName || "Resume"} - CV Document</title>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+            serif: ["Playfair Display", "Georgia", "serif"],
+            display: ["Space Grotesk", "sans-serif"]
+          }
+        }
+      }
+    }
+  <\/script>
+  <style>
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-padding-none {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+    }
+    body {
+      background-color: #0f172a;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 font-sans">
+  <div class="no-print bg-slate-900/95 backdrop-blur border-b border-white/10 sticky top-0 z-50 px-4 py-3.5 shadow-xl">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div class="flex items-center gap-2">
+        <span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+        <span class="text-xs font-bold font-mono tracking-wide text-emerald-400 uppercase">HIGH FIDELITY VECTOR EXPORT</span>
+        <span class="text-xs text-slate-400">| Complete style rendering loaded perfectly.</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg text-xs transition-all flex items-center gap-1.5 shadow-lg shadow-indigo-600/30 cursor-pointer">
+          <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save as PDF
+        </button>
+        <button onclick="window.close()" class="bg-white/10 hover:bg-white/20 text-slate-200 py-2 px-3 rounded-lg text-xs font-semibold cursor-pointer transition-all border border-white/5">
+          Close Window
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-2 sm:px-4 py-10 print:py-0 print:px-0">
+    <div class="max-w-[800px] mx-auto bg-white text-slate-900 overflow-hidden shadow-2xl print:shadow-none print-padding-none rounded-2xl print:rounded-none">
+      ${resumeHTML}
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.print();
+      }, 600);
+    });
+  <\/script>
+</body>
+</html>
+      `;
+
+      const blob = new Blob([printDoc], { type: "text/html;charset=utf-8" });
+      const blobUrl = URL.createObjectURL(blob);
+      const newTab = window.open(blobUrl, "_blank");
+      if (!newTab) {
+        alert("Popup was blocked! Please authorize popups to load high fidelity PDFs.");
+      }
+    }
+
+    // Dynamic Experience List Generator
+    function renderFormLists() {
+      renderExperiencesListForm();
+      renderProjectsListForm();
+      renderEducationListForm();
+      renderCertsListForm();
+      renderLanguagesListForm();
+    }
+
+    function renderExperiencesListForm() {
+      const container = document.getElementById("list-experiences");
+      container.innerHTML = "";
+      
+      resumeData.experiences.forEach((exp, idx) => {
+        const item = document.createElement("div");
+        item.className = "p-3.5 rounded-lg border border-white/5 bg-white/[0.02] space-y-3 relative";
+        item.innerHTML = `
+          <button onclick="deleteExperience(${idx})" class="absolute top-2 right-2 text-rose-500 text-xs hover:underline cursor-pointer font-mono font-bold">✕ Delete</button>
+          
+          <div class="grid grid-cols-2 gap-2 pt-2">
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Company</label>
+              <input type="text" value="${exp.company || ''}" oninput="updateExperienceField(${idx}, 'company', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Role</label>
+              <input type="text" value="${exp.role || ''}" oninput="updateExperienceField(${idx}, 'role', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Start Date</label>
+              <input type="text" value="${exp.startDate || ''}" oninput="updateExperienceField(${idx}, 'startDate', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white" placeholder="Jan 2023">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">End Date</label>
+              <input type="text" value="${exp.endDate || ''}" oninput="updateExperienceField(${idx}, 'endDate', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white" ${exp.current ? 'disabled' : ''} placeholder="Present">
+            </div>
+            <div class="flex items-center gap-1 mt-3">
+              <input type="checkbox" id="current-${idx}" ${exp.current ? 'checked' : ''} onchange="updateExperienceField(${idx}, 'current', this.checked)" class="rounded border-white/5 text-indigo-600 bg-slate-900">
+              <label for="current-${idx}" class="text-[9px] text-slate-400 font-mono">Current</label>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Location</label>
+            <input type="text" value="${exp.location || ''}" oninput="updateExperienceField(${idx}, 'location', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+          </div>
+
+          <div>
+            <label class="text-[9px] text-slate-400 uppercase font-bold font-mono block mb-1">Bullets Achievements (one per line)</label>
+            <textarea rows="3" oninput="updateExperienceBullets(${idx}, this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-1 text-xs text-white font-sans">${exp.bullets ? exp.bullets.join('\n') : ''}</textarea>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addNewExperience() {
+      const newExp = {
+        id: "exp-" + Date.now(),
+        company: "",
+        role: "",
+        location: "",
+        startDate: "",
+        endDate: "",
+        current: false,
+        bullets: []
+      };
+      resumeData.experiences.push(newExp);
+      saveToLocalStorage();
+      renderExperiencesListForm();
+      renderPreview();
+    }
+
+    function updateExperienceField(idx, field, val) {
+      resumeData.experiences[idx][field] = val;
+      if (field === 'current' && val === true) {
+        resumeData.experiences[idx].endDate = "Present";
+      }
+      saveToLocalStorage();
+      renderExperiencesListForm();
+      renderPreview();
+    }
+
+    function updateExperienceBullets(idx, value) {
+      resumeData.experiences[idx].bullets = value.split('\n').map(b => b.trim()).filter(Boolean);
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    function deleteExperience(idx) {
+      resumeData.experiences.splice(idx, 1);
+      saveToLocalStorage();
+      renderExperiencesListForm();
+      renderPreview();
+    }
+
+    // Projects list form mapping
+    function renderProjectsListForm() {
+      const container = document.getElementById("list-projects");
+      container.innerHTML = "";
+      
+      resumeData.projects.forEach((proj, idx) => {
+        const item = document.createElement("div");
+        item.className = "p-3.5 rounded-lg border border-white/5 bg-white/[0.02] space-y-2 relative";
+        item.innerHTML = `
+          <button onclick="deleteProject(${idx})" class="absolute top-2 right-2 text-rose-500 text-xs hover:underline cursor-pointer font-mono font-bold">✕ Delete</button>
+          
+          <div class="grid grid-cols-2 gap-2 pt-2">
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Project Title</label>
+              <input type="text" value="${proj.title || ''}" oninput="updateProjectField(${idx}, 'title', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Live Demo/Code Link</label>
+              <input type="text" value="${proj.link || ''}" oninput="updateProjectField(${idx}, 'link', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[9px] text-slate-505 uppercase font-bold font-mono">GitHub Repo URL</label>
+              <input type="text" value="${proj.github || ''}" oninput="updateProjectField(${idx}, 'github', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-505 uppercase font-bold font-mono">Tech Used (comma split)</label>
+              <input type="text" value="${proj.technologies || ''}" oninput="updateProjectField(${idx}, 'technologies', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white" placeholder="React, Rust">
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[9px] text-slate-400 uppercase font-bold font-mono block">Short Description</label>
+            <textarea rows="2" oninput="updateProjectField(${idx}, 'description', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-1 text-xs text-white">${proj.description || ''}</textarea>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addNewProject() {
+      const newProj = {
+        id: "proj-" + Date.now(),
+        title: "",
+        description: "",
+        link: "",
+        github: "",
+        technologies: ""
+      };
+      resumeData.projects.push(newProj);
+      saveToLocalStorage();
+      renderProjectsListForm();
+      renderPreview();
+    }
+
+    function updateProjectField(idx, field, val) {
+      resumeData.projects[idx][field] = val;
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    function deleteProject(idx) {
+      resumeData.projects.splice(idx, 1);
+      saveToLocalStorage();
+      renderProjectsListForm();
+      renderPreview();
+    }
+
+    // Education Dynamic List View
+    function renderEducationListForm() {
+      const container = document.getElementById("list-education");
+      container.innerHTML = "";
+      
+      resumeData.education.forEach((edu, idx) => {
+        const item = document.createElement("div");
+        item.className = "p-3.5 rounded-lg border border-white/5 bg-white/[0.02] space-y-2 relative";
+        item.innerHTML = `
+          <button onclick="deleteEducation(${idx})" class="absolute top-2 right-2 text-rose-500 text-xs hover:underline cursor-pointer font-mono font-bold">✕ Delete</button>
+          
+          <div class="grid grid-cols-2 gap-2 pt-2">
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">School / Institution</label>
+              <input type="text" value="${edu.institution || ''}" oninput="updateEducationField(${idx}, 'institution', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Degree Earned</label>
+              <input type="text" value="${edu.degree || ''}" oninput="updateEducationField(${idx}, 'degree', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white" placeholder="MS / BS">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Field of Study</label>
+              <input type="text" value="${edu.fieldOfStudy || ''}" oninput="updateEducationField(${idx}, 'fieldOfStudy', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">Start Date</label>
+              <input type="text" value="${edu.startDate || ''}" oninput="updateEducationField(${idx}, 'startDate', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">End Date</label>
+              <input type="text" value="${edu.endDate || ''}" oninput="updateEducationField(${idx}, 'endDate', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[9px] text-slate-500 uppercase font-bold font-mono">GPA Score / Honors</label>
+            <input type="text" value="${edu.score || ''}" oninput="updateEducationField(${idx}, 'score', this.value)" class="w-full bg-slate-900 border border-white/5 rounded px-2 py-0.5 text-xs text-white" placeholder="Honors GPA 3.9">
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addNewEducation() {
+      const newEdu = {
+        id: "edu-" + Date.now(),
+        institution: "",
+        degree: "",
+        fieldOfStudy: "",
+        startDate: "",
+        endDate: "",
+        location: "",
+        score: ""
+      };
+      if (!resumeData.education) resumeData.education = [];
+      resumeData.education.push(newEdu);
+      saveToLocalStorage();
+      renderEducationListForm();
+      renderPreview();
+    }
+
+    function updateEducationField(idx, field, val) {
+      resumeData.education[idx][field] = val;
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    function deleteEducation(idx) {
+      resumeData.education.splice(idx, 1);
+      saveToLocalStorage();
+      renderEducationListForm();
+      renderPreview();
+    }
+
+    // Certs Dynamic mapping
+    function renderCertsListForm() {
+      const container = document.getElementById("list-certifications");
+      container.innerHTML = "";
+      if (!resumeData.certifications) resumeData.certifications = [];
+      
+      resumeData.certifications.forEach((cert, idx) => {
+        const item = document.createElement("div");
+        item.className = "p-2 rounded border border-white/5 bg-white/[0.01] grid grid-cols-3 gap-1.5 relative pt-4";
+        item.innerHTML = `
+          <button onclick="deleteCert(${idx})" class="absolute top-1 right-1 text-rose-500 text-[10px] hover:underline cursor-pointer">✕</button>
+          <div>
+            <input type="text" value="${cert.name || ''}" oninput="updateCertField(${idx}, 'name', this.value)" class="w-full bg-slate-900 text-[10px] text-white border border-white/5 rounded p-1" placeholder="AWS Solution">
+          </div>
+          <div>
+            <input type="text" value="${cert.issuer || ''}" oninput="updateCertField(${idx}, 'issuer', this.value)" class="w-full bg-slate-900 text-[10px] text-white border border-white/5 rounded p-1" placeholder="Issuer">
+          </div>
+          <div>
+            <input type="text" value="${cert.date || ''}" oninput="updateCertField(${idx}, 'date', this.value)" class="w-full bg-slate-900 text-[10px] text-white border border-white/5 rounded p-1" placeholder="Year">
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addNewCertification() {
+      if (!resumeData.certifications) resumeData.certifications = [];
+      resumeData.certifications.push({ id: "cert-"+Date.now(), name: "", issuer: "", date: "" });
+      saveToLocalStorage();
+      renderCertsListForm();
+      renderPreview();
+    }
+
+    function updateCertField(idx, field, val) {
+      resumeData.certifications[idx][field] = val;
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    function deleteCert(idx) {
+      resumeData.certifications.splice(idx, 1);
+      saveToLocalStorage();
+      renderCertsListForm();
+      renderPreview();
+    }
+
+    // Languages Dynamic mapping
+    function renderLanguagesListForm() {
+      const container = document.getElementById("list-languages");
+      container.innerHTML = "";
+      if (!resumeData.languages) resumeData.languages = [];
+      
+      resumeData.languages.forEach((lang, idx) => {
+        const item = document.createElement("div");
+        item.className = "p-2 rounded border border-white/5 bg-white/[0.01] grid grid-cols-2 gap-2 relative pt-4";
+        item.innerHTML = `
+          <button onclick="deleteLanguage(${idx})" class="absolute top-1 right-1 text-rose-500 text-[10px] hover:underline cursor-pointer">✕</button>
+          <div>
+            <input type="text" value="${lang.name || ''}" oninput="updateLanguageField(${idx}, 'name', this.value)" class="w-full bg-slate-900 text-[10px] text-white border border-white/5 rounded p-1" placeholder="Gaeilge">
+          </div>
+          <div>
+            <input type="text" value="${lang.proficiency || ''}" oninput="updateLanguageField(${idx}, 'proficiency', this.value)" class="w-full bg-slate-900 text-[10px] text-white border border-white/5 rounded p-1" placeholder="Fluent">
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addNewLanguage() {
+      if (!resumeData.languages) resumeData.languages = [];
+      resumeData.languages.push({ id: "lang-"+Date.now(), name: "", proficiency: "" });
+      saveToLocalStorage();
+      renderLanguagesListForm();
+      renderPreview();
+    }
+
+    function updateLanguageField(idx, field, val) {
+      resumeData.languages[idx][field] = val;
+      saveToLocalStorage();
+      renderPreview();
+    }
+
+    function deleteLanguage(idx) {
+      resumeData.languages.splice(idx, 1);
+      saveToLocalStorage();
+      renderLanguagesListForm();
+      renderPreview();
+    }
+
+    // MAIN RENDER CONTROLLER (Live Switch Renderer)
+    function renderPreview() {
+      const frameContainer = document.getElementById("preview-frame");
+      
+      if (viewMode === "portfolio") {
+        frameContainer.innerHTML = generateInteractivePortfolioHtml();
+      } else if (viewMode === "resume") {
+        frameContainer.innerHTML = generateClassicalCVHtml();
+      } else if (viewMode === "android") {
+        frameContainer.innerHTML = generateAndroidAppHtml();
+      }
+    }
+
+    // MAIN RENDER CONTROLLER (Live Switch Renderer)
+    function renderPreview() {
+      const frameContainer = document.getElementById("preview-frame");
+      
+      if (viewMode === "portfolio") {
+        frameContainer.innerHTML = generateInteractivePortfolioHtml();
+      } else if (viewMode === "resume") {
+        frameContainer.innerHTML = generateClassicalCVHtml();
+      } else if (viewMode === "android") {
+        frameContainer.innerHTML = generateAndroidAppHtml();
+      }
+    }
+
+    // ANDROID SIMULATOR HELPERS
+    function setAndroidTab(tab) {
+      activeAndroidTab = tab;
+      renderPreview();
+    }
+
+    function setAndroidTheme(theme) {
+      activeAndroidTheme = theme;
+      renderPreview();
+    }
+
+    function openAndroidSheet(title, message) {
+      isAndroidSheetOpen = true;
+      androidSheetContent = `
+        <div class="font-sans text-slate-800">
+          <h4 class="text-sm font-bold text-slate-900 mb-2">${title}</h4>
+          <p class="text-xs text-slate-600 mb-5">${message}</p>
+          <button onclick="closeAndroidSheet()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 rounded-lg text-xs transition-all uppercase tracking-wider">OK, Continue</button>
+        </div>
+      `;
+      renderPreview();
+    }
+
+    function closeAndroidSheet() {
+      isAndroidSheetOpen = false;
+      renderPreview();
+    }
+
+    function triggerAndroidBuild() {
+      if (androidBuildProgress >= 0) return; // Build in progress
+      
+      androidBuildProgress = 0;
+      androidBuildLogs = [
+        "🤖 Initializing Android Software Development Kit (SDK v34)...",
+        "📂 Reading project source structures and assets...",
+        "🗃️ Generating customized manifest package permissions..."
+      ];
+      renderPreview();
+
+      const buildSteps = [
+        { progress: 20, log: "📦 Compiling Material Design 3 theme system and XML vector grids..." },
+        { progress: 45, log: "🔩 Optimizing dex compilers and compiling Kotlin application widgets..." },
+        { progress: 70, log: "🔬 Resolving multi-threaded network configurations..." },
+        { progress: 90, log: "🔏 Signing application binary package with release signatures..." },
+        { progress: 100, log: "🎉 Success! APK generated successfully: craftcv-app-release.apk (7.2 MB)" }
+      ];
+
+      let currentStep = 0;
+      const interval = setInterval(() => {
+        if (currentStep < buildSteps.length) {
+          androidBuildProgress = buildSteps[currentStep].progress;
+          androidBuildLogs.push(buildSteps[currentStep].log);
+          currentStep++;
+          renderPreview();
+        } else {
+          clearInterval(interval);
+        }
+      }, 700);
+    }
+
+    function generateAndroidAppHtml() {
+      const { personal, experiences, education, projects, skills } = resumeData;
+      
+      // Theme colors dictionary mapping to Tailwind classes inside the phone environment
+      const aThemes = {
+        indigo: { primary: "bg-indigo-600", text: "text-indigo-600", border: "border-indigo-600/30", bgSoft: "bg-indigo-50", textSoft: "text-indigo-700", accent: "bg-indigo-100 text-indigo-800", ring: "ring-indigo-600" },
+        emerald: { primary: "bg-emerald-600", text: "text-emerald-600", border: "border-emerald-600/30", bgSoft: "bg-emerald-50", textSoft: "text-emerald-700", accent: "bg-emerald-100 text-emerald-800", ring: "ring-emerald-600" },
+        rose: { primary: "bg-rose-600", text: "text-rose-600", border: "border-rose-600/30", bgSoft: "bg-rose-50", textSoft: "text-rose-700", accent: "bg-rose-100 text-rose-800", ring: "ring-rose-600" },
+        sky: { primary: "bg-sky-600", text: "text-sky-600", border: "border-sky-600/30", bgSoft: "bg-sky-50", textSoft: "text-sky-700", accent: "bg-sky-100 text-sky-800", ring: "ring-sky-600" },
+        amber: { primary: "bg-amber-500", text: "text-amber-600", border: "border-amber-500/30", bgSoft: "bg-amber-50", textSoft: "text-amber-850", accent: "bg-amber-100 text-amber-900", ring: "ring-amber-500" }
+      };
+
+      const theme = aThemes[activeAndroidTheme] || aThemes.indigo;
+      const themeName = activeAndroidTheme.charAt(0).toUpperCase() + activeAndroidTheme.slice(1);
+
+      // Render Active Tab Content
+      let screenHtml = "";
+
+      if (activeAndroidTab === "home") {
+        screenHtml = `
+          <div class="space-y-4">
+            <!-- Dynamic Hero avatar Card -->
+            <div class="bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-4 text-white shadow-md relative overflow-hidden">
+              <div class="absolute -right-3 -bottom-3 w-16 h-16 bg-white/5 rounded-full pointer-events-none"></div>
+              <div class="flex items-center gap-3 relative z-10">
+                <div class="w-12 h-12 rounded-full border-2 border-white/20 overflow-hidden bg-slate-950 flex items-center justify-center shrink-0">
+                  ${personal.photoUrl ? `
+                    <img src="${personal.photoUrl}" alt="Avatar" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  ` : `
+                    <svg class="w-6 h-6 text-slate-450" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                  `}
+                </div>
+                <div>
+                  <h3 class="text-sm font-extrabold tracking-tight">${personal.fullName || "Alex Rivera"}</h3>
+                  <p class="text-[10px] text-slate-300 font-medium font-mono">${personal.title || "Senior Software Engineer"}</p>
+                </div>
+              </div>
+              <div class="mt-3.5 pt-3 border-t border-white/10 flex justify-between items-center text-[9px] text-slate-400 font-mono">
+                <span>📍 ${personal.location || "San Francisco, CA"}</span>
+                <span class="bg-emerald-500/25 text-emerald-300 px-2 py-0.5 rounded-full font-bold">● Live Companion</span>
+              </div>
+            </div>
+
+            <!-- Bio Segment widget -->
+            <div class="bg-white rounded-xl p-3 border border-slate-150 shadow-sm space-y-1.5">
+              <h4 class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Professional Objective</h4>
+              <p class="text-xs text-slate-700 leading-relaxed font-normal">
+                ${personal.summary || "Accomplished builder specializing in robust tech frameworks, responsive client architecture, and smart AI configurations."}
+              </p>
+            </div>
+
+            <!-- Live Actions Sheet widgets -->
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="openAndroidSheet('Contact Email Launcher', 'Opening default mail application routing to ${personal.email || 'alex@example.com'}...')" class="bg-slate-50 hover:bg-slate-100 p-2.5 rounded-xl border border-slate-200 text-left transition-all">
+                <span class="text-[9px] text-slate-400 block uppercase font-mono tracking-wider">Send Mail</span>
+                <span class="text-xs font-bold text-slate-800 truncate block">${personal.email || "alex@example.com"}</span>
+              </button>
+              <button onclick="openAndroidSheet('Phone Caller dialer', 'Initializing telephone dialer interface targeted to ${personal.phone || '+1(555)019-2834'}...')" class="bg-slate-50 hover:bg-slate-100 p-2.5 rounded-xl border border-slate-200 text-left transition-all">
+                <span class="text-[9px] text-slate-400 block uppercase font-mono tracking-wider">Dial Phone</span>
+                <span class="text-xs font-bold text-slate-800 truncate block">${personal.phone || "+123-456-7890"}</span>
+              </button>
+            </div>
+
+            <!-- Material You Android AI Prompt Widget -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3.5 space-y-2">
+              <div class="flex items-center gap-1.5">
+                <span class="bg-indigo-600 text-white rounded p-0.5 text-[9px] font-bold">AI</span>
+                <span class="text-[10px] font-extrabold text-indigo-950 font-mono">Career Insights Bot</span>
+              </div>
+              <p class="text-[11px] text-indigo-900 leading-relaxed">
+                "Alex's credentials qualify him perfectly for high-fidelity Android Mobile environments due to robust Full-Stack and dynamic SDK handling."
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (activeAndroidTab === "experience") {
+        screenHtml = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between pb-1">
+              <h4 class="text-[11px] uppercase font-bold text-slate-405 tracking-wider font-mono">Work Records (${experiences.length})</h4>
+              <span class="text-[10px] text-slate-400">Expandable Details</span>
+            </div>
+            ${experiences.length === 0 ? `
+              <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                <p class="text-xs text-slate-400">No experiences listed yet</p>
+              </div>
+            ` : experiences.map((exp, idx) => `
+              <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm hover:shadow transition-all space-y-2">
+                <div class="flex justify-between items-start gap-1">
+                  <div>
+                    <h5 class="text-xs font-extrabold text-slate-900">${exp.role || "Professional Role"}</h5>
+                    <p class="text-[10px] text-slate-550 font-medium">${exp.company || "Enterprise Corp"}</p>
+                  </div>
+                  <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold shrink-0">
+                    ${exp.startDate || "Current"}
+                  </span>
+                </div>
+                <!-- Mini Bullets list inside android -->
+                <ul class="text-[10px] text-slate-600 space-y-1 list-disc pl-3 border-t border-slate-100 pt-2 font-sans">
+                  ${exp.bullets ? exp.bullets.map(b => `<li class="leading-relaxed">${b}</li>`).join("") : "<li>Contributed to main corporate platforms.</li>"}
+                </ul>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else if (activeAndroidTab === "projects") {
+        screenHtml = `
+          <div class="space-y-3">
+            <h4 class="text-[11px] uppercase font-bold text-slate-405 tracking-wider font-mono pb-1">Projects Simulation Grid</h4>
+            ${projects.length === 0 ? `
+              <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                <p class="text-xs text-slate-400">No projects added yet</p>
+              </div>
+            ` : projects.map((p, idx) => {
+              const techList = p.technologies ? p.technologies.split(",").map(item => item.trim()) : [];
+              return `
+                <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm hover:scale-[1.01] transition-all space-y-2">
+                  <div class="flex justify-between items-center bg-slate-50 p-1.5 rounded-lg border border-slate-100">
+                    <span class="text-xs font-bold text-slate-900 font-mono tracking-tight">${p.title || "Project Card"}</span>
+                    <button onclick="openAndroidSheet('Simulate Launch', 'Executing mobile unit integration test on Android emulator for high response performance...')" class="bg-slate-900 text-white text-[9px] font-bold px-2.5 py-1 rounded hover:bg-slate-850 uppercase tracking-widest">Test Run</button>
+                  </div>
+                  <p class="text-[10px] text-slate-600 leading-normal">${p.description || "Interactive dynamic website representation module."}</p>
+                  <div class="flex flex-wrap gap-1">
+                    ${techList.map(t => `<span class="text-[8px] font-mono bg-indigo-50 border border-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-semibold">${t}</span>`).join("")}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      } else if (activeAndroidTab === "skills") {
+        screenHtml = `
+          <div class="space-y-3">
+            <h4 class="text-[11px] uppercase font-bold text-slate-405 tracking-wider font-mono">Skill Cloud Inventory</h4>
+            <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm space-y-3">
+              <span class="text-[10px] text-slate-400 uppercase font-mono block tracking-wider">Adaptive Material Chips:</span>
+              <div class="flex flex-wrap gap-1.5">
+                ${skills.length === 0 ? `
+                  <span class="text-xs text-slate-400">No skills keywords listed.</span>
+                ` : skills.map(s => `
+                  <span class="text-xs ${theme.accent} px-2.5 py-1 rounded-full font-bold font-mono tracking-tight cursor-pointer hover:scale-105 transition-all">
+                    🏷️ ${s}
+                  </span>
+                `).join("")}
+              </div>
+            </div>
+
+            <!-- Material Card: Mobile validation indicators -->
+            <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 space-y-1">
+              <span class="text-[10px] uppercase font-extrabold text-emerald-800 font-mono tracking-wider block">Verified Compatibilities</span>
+              <ul class="text-[10px] text-emerald-700 space-y-1 list-none leading-normal">
+                <li>✅ <strong>Gradle Structure</strong>: Built matching Android SDK specs</li>
+                <li>✅ <strong>Interface Speed</strong>: Optimized for touch layouts</li>
+                <li>✅ <strong>Material Design 3</strong>: Highly responsive layouts</li>
+              </ul>
+            </div>
+          </div>
+        `;
+      } else if (activeAndroidTab === "builder") {
+        screenHtml = `
+          <div class="space-y-4">
+            <h4 class="text-[11px] uppercase font-bold text-slate-405 tracking-wider font-mono">Digital APK Assembly Studio</h4>
+            
+            <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm space-y-3">
+              <div class="space-y-1">
+                <label class="text-[9px] font-mono text-slate-400 uppercase">Android Package Namespace</label>
+                <input type="text" id="apk-package-name" value="com.craftcv.${personal.fullName ? personal.fullName.toLowerCase().replace(/\\s+/g, '') : "portfolio"}" class="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-1.5 text-xs text-slate-800 font-mono focus:outline-none" />
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[9px] font-mono text-slate-400 uppercase">Minimum Android Kernel SDK</label>
+                <select class="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none font-sans">
+                  <option>Android 11 (API Level 30) - 94% Devices</option>
+                  <option>Android 13 (API Level 33) - 78% Devices</option>
+                  <option selected>Android 14 (API Level 34) - High Performance</option>
+                </select>
+              </div>
+
+              <div class="pt-1">
+                ${androidBuildProgress >= 0 ? `
+                  <div class="space-y-2">
+                    <div class="flex justify-between text-[10px] font-mono font-bold text-slate-700">
+                      <span>Assembling Package APK...</span>
+                      <span>${androidBuildProgress}%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden border">
+                      <div class="${theme.primary} h-full transition-all duration-300" style="width: ${androidBuildProgress}%"></div>
+                    </div>
+                  </div>
+                ` : `
+                  <button onclick="triggerAndroidBuild()" class="w-full ${theme.primary} hover:opacity-90 active:scale-[0.98] text-white py-2.5 px-4 rounded-xl text-xs font-extrabold shadow-md transition-all uppercase tracking-wider font-mono">Compile APK Package</button>
+                `}
+              </div>
+            </div>
+
+            <!-- Streaming log compilation window mock -->
+            ${androidBuildLogs.length > 0 ? `
+              <div class="bg-slate-905 bg-black rounded-xl p-3 overflow-hidden text-[#51ff00] font-mono text-[9px] leading-relaxed border border-slate-800 shadow-inner">
+                <div class="flex justify-between text-white border-b border-white/10 pb-1.5 mb-2 uppercase tracking-wide text-[8px] font-bold">
+                  <span>Compilation Logs Terminal</span>
+                  <span class="animate-pulse">● System compiling</span>
+                </div>
+                <div class="space-y-1.5 max-h-[140px] overflow-y-auto pr-1">
+                  ${androidBuildLogs.map(log => `<div>${log}</div>`).join("")}
+                </div>
+                
+                ${androidBuildProgress === 100 ? `
+                  <div class="mt-3 pt-3 border-t border-white/10 flex gap-2">
+                    <button onclick="openAndroidSheet('Install package complete', 'The simulated CraftCV companion APK compiled successfully. The system has updated the main manifest and mapped asset paths.')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded text-[10px] font-extrabold uppercase tracking-wide flex-1 transition-all">Package Details</button>
+                    <a href="resume.html" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/15 px-2.5 py-1.5 rounded text-[10px] font-extrabold text-center uppercase tracking-wide transition-all">Launch APK App</a>
+                  </div>
+                ` : ""}
+              </div>
+            ` : ""}
+          </div>
+        `;
+      }
+
+      return `
+        <!-- High fidelity Android smartphone physical chassis frame -->
+        <div class="w-full max-w-[420px] mx-auto bg-slate-950/20 p-2 sm:p-5 flex justify-center items-center">
+          
+          <div class="w-full bg-[#1e2025] rounded-[48px] p-3.5 border-[8px] border-slate-825 border-slate-800 shadow-2xl relative select-none">
+            
+            <!-- Dynamic dynamic island camera capsule cutout -->
+            <div class="absolute top-6 left-1/2 transform -translate-x-1/2 w-24 h-5 bg-black rounded-full z-30 flex items-center justify-center">
+              <div class="w-2.5 h-2.5 rounded-full bg-slate-900 absolute right-3 border border-slate-850"></div>
+            </div>
+
+            <!-- WORKING SMARTPHONE FULL INNER BOARD SCREEN -->
+            <div class="w-full bg-[#ededf2] rounded-[36px] overflow-hidden flex flex-col min-h-[640px] text-slate-800 relative z-10 border border-[#2d2f35]">
+              
+              <!-- Core android system status dashboard (Standard Android bar) -->
+              <div class="h-8 bg-slate-900 flex justify-between px-5 items-center text-[10px] text-slate-300 relative z-20 font-bold tracking-tight">
+                <span class="font-mono">09:41</span>
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9c0 2.12.74 4.07 1.97 5.61L4.35 19.4a1 1 0 0 0 1.41 1.41l1.79-1.79C9.09 19.61 10.49 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6s6 2.69 6 6s-2.69 6-6 6z"/></svg>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2z"/></svg>
+                  <span class="text-[9px] font-mono leading-none pt-0.5">98%</span>
+                </div>
+              </div>
+
+              <!-- Premium Material You App toolbar banner -->
+              <div class="p-4 ${theme.primary} text-white shadow-md relative overflow-hidden flex justify-between items-center">
+                <div>
+                  <h2 class="text-xs font-extrabold uppercase tracking-widest leading-none font-mono">com.craftcv.companion</h2>
+                  <h1 class="text-base font-bold tracking-tight mt-0.5">CraftCV Android Client</h1>
+                </div>
+                <div class="bg-white/10 rounded-full px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider uppercase">
+                  ${themeName}
+                </div>
+              </div>
+
+              <!-- Interactive Material You Dynamic Color switchboard UI overlay -->
+              <div class="bg-white p-3 border-b border-slate-200.5 flex items-center justify-between text-xs gap-2">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-mono">Material You Theme</span>
+                <div class="flex gap-2">
+                  ${["indigo", "emerald", "rose", "sky", "amber"].map(c => `
+                    <button onclick="setAndroidTheme('${c}')" class="w-4 h-4 rounded-full border transition-all hover:scale-115 ${activeAndroidTheme === c ? "ring-2 ring-indigo-500 scale-110 border-white" : "border-slate-300"} ${
+                      c === "indigo" ? "bg-indigo-600" :
+                      c === "emerald" ? "bg-emerald-600" :
+                      c === "rose" ? "bg-rose-500" :
+                      c === "sky" ? "bg-sky-500" : "bg-amber-500"
+                    }"></button>
+                  `).join("")}
+                </div>
+              </div>
+
+              <!-- MAIN INTERACTIVE APP CONTAINER PANEL -->
+              <div class="flex-1 p-4 overflow-y-auto max-h-[460px] min-h-[420px]">
+                ${screenHtml}
+              </div>
+
+              <!-- Simulated overlay mobile contact sheet bottom popup -->
+              ${isAndroidSheetOpen ? `
+                <div class="absolute inset-x-0 bottom-0 bg-black/40 z-35 flex flex-col justify-end transition-all duration-300">
+                  <div class="bg-white p-5 rounded-t-[32px] border-t border-slate-205 shadow-2xl relative animate-slide-up select-none">
+                    <div class="w-12 h-1 bg-slate-350 rounded-full mx-auto mb-4"></div>
+                    ${androidSheetContent}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- GORGEOUS BOTTOM NAVIGATION TAB BAR (Standard Material design bottom) -->
+              <div class="h-16 bg-slate-900 border-t border-white/5 flex justify-around items-center px-2 text-[9px] z-30 font-bold select-none text-slate-400">
+                <button onclick="setAndroidTab('home')" class="flex flex-col items-center justify-center flex-1 transition-all ${activeAndroidTab === "home" ? "text-white" : "hover:text-slate-200"}">
+                  <svg class="w-4 h-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                  <span>App Home</span>
+                </button>
+                <button onclick="setAndroidTab('experience')" class="flex flex-col items-center justify-center flex-1 transition-all ${activeAndroidTab === "experience" ? "text-white" : "hover:text-slate-200"}">
+                  <svg class="w-4 h-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4.674 1.255a23.91 23.91 0 01-2 0M12 11h.01" /></svg>
+                  <span>Experience</span>
+                </button>
+                <button onclick="setAndroidTab('projects')" class="flex flex-col items-center justify-center flex-1 transition-all ${activeAndroidTab === "projects" ? "text-white" : "hover:text-slate-200"}">
+                  <svg class="w-4 h-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                  <span>Projects</span>
+                </button>
+                <button onclick="setAndroidTab('skills')" class="flex flex-col items-center justify-center flex-1 transition-all ${activeAndroidTab === "skills" ? "text-white" : "hover:text-slate-200"}">
+                  <svg class="w-4 h-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                  <span>Skills</span>
+                </button>
+                <button onclick="setAndroidTab('builder')" class="flex flex-col items-center justify-center flex-1 transition-all ${activeAndroidTab === "builder" ? "text-white" : "hover:text-slate-200"}">
+                  <svg class="w-4 h-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  <span>APK Studio</span>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      `;
+    }
+    function generateInteractivePortfolioHtml() {
+      const { personal, experiences, education, projects, skills, languages, certifications } = resumeData;
+      const activeColor = colorsMap[styleSettings.accentColor] || colorsMap.indigo;
+      const themePrefix = styleSettings.accentColor;
+
+      // Map dynamic experiences blocks
+      const listExpHTML = experiences.map(exp => `
+        <div class="relative pl-6 pb-6 border-l border-white/10 last:pb-0">
+          <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-${themePrefix}-500 ring-4 ring-${themePrefix}-950"></div>
+          <div class="flex flex-wrap justify-between items-baseline gap-2 mb-1">
+            <h4 class="text-sm font-semibold text-white tracking-wide">${exp.role || "Professional Role"} <span class="text-${themePrefix}-400">@ ${exp.company || "Enterprise"}</span></h4>
+            <span class="text-[11px] text-slate-500 font-mono">${exp.startDate || ""} - ${exp.current ? "Present" : (exp.endDate || "")}</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-2">${exp.location || ""}</p>
+          <ul class="list-disc pl-4 space-y-1 text-slate-400 text-xs sm:text-sm">
+            ${exp.bullets ? exp.bullets.map(b => `<li>${b}</li>`).join("") : ""}
+          </ul>
+        </div>
+      `).join("");
+
+      // Map dynamic projects
+      const listProjectsHTML = projects.map(p => {
+        const pTechs = p.technologies ? p.technologies.split(",").map(item => item.trim()).filter(Boolean) : [];
+        return `
+          <div class="group border border-slate-800 rounded-xl bg-slate-950/40 p-5 hover:border-${themePrefix}-500/30 transition-all duration-300">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="text-sm font-bold text-white group-hover:text-${themePrefix}-400 transition-colors">${p.title || "Unnamed Innovation"}</h4>
+              <div class="flex gap-2.5 text-slate-500">
+                ${p.github ? `<a href="${p.github}" target="_blank" class="hover:text-white transition-colors"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>` : ""}
+                ${p.link ? `<a href="${p.link}" target="_blank" class="hover:text-white transition-colors"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="m10 14 11-11"/></svg></a>` : ""}
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">${p.description || "Exciting architecture and performance engineering system stack built to scale perfectly."}</p>
+            <div class="flex flex-wrap gap-1">
+              ${pTechs.map(tech => `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-450">${tech}</span>`).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Map dynamic education
+      const listEduHTML = education.map(edu => `
+        <div class="border border-slate-850 rounded-xl p-4 bg-slate-950/20">
+          <div class="flex justify-between items-baseline mb-1">
+            <h5 class="text-xs sm:text-sm font-bold text-white">${edu.degree || "Degree"} in ${edu.fieldOfStudy || "Field"}</h5>
+            <span class="text-[10px] text-slate-500 font-mono">${edu.startDate || ""} - ${edu.endDate || ""}</span>
+          </div>
+          <p class="text-xs text-slate-400">${edu.institution}</p>
+          ${edu.score ? `<p class="text-[10px] text-slate-500 mt-1 font-mono">${edu.score}</p>` : ""}
+        </div>
+      `).join("");
+
+      // Map language cards
+      const listLanguagesHTML = languages.map(l => `
+        <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
+          <p class="text-white text-xs font-bold font-mono">${l.name}</p>
+          <p class="text-[10px] text-slate-500 font-mono">${l.proficiency}</p>
+        </div>
+      `).join("");
+
+      // Map certifications list
+      const listCertificationsHTML = certifications.map(c => `
+        <li class="border-b border-slate-900 pb-2 last:border-none last:pb-0">
+          <p class="font-bold text-white text-xs">${c.name}</p>
+          <p class="text-[10px] text-slate-500 font-mono">${c.issuer} (${c.date})</p>
+        </li>
+      `).join("");
+
+      return `
+        <div class="w-full bg-[#0A0B0E] p-6 sm:p-10 md:p-16 rounded-3xl border border-white/5 shadow-2xl relative overflow-hidden transition-all duration-350">
+          <!-- Ambient gradient background bloom glows -->
+          <div class="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-${themePrefix}-600/10 blur-[120px] pointer-events-none"></div>
+          <div class="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-blue-600/10 blur-[120px] pointer-events-none"></div>
+
+          <!-- Hero Intro Block -->
+          <div class="relative py-8 border-b border-white/5 text-center sm:text-left flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
+            ${personal.photoUrl ? `
+              <div class="relative shrink-0">
+                <div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-${themePrefix}-500 to-blue-500 blur opacity-40"></div>
+                <img src="${personal.photoUrl}" alt="${personal.fullName}" class="relative w-28 h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-slate-900 shadow-xl" />
+              </div>
+            ` : ""}
+            
+            <div class="flex-1 space-y-3.5">
+              <div class="inline-flex items-center gap-1.5 bg-${themePrefix}-500/10 border border-${themePrefix}-500/20 text-${themePrefix}-400 px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wider uppercase">
+                💻 Ready for Hire
+              </div>
+              <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white font-space">
+                ${personal.fullName || "My Professional Name"}
+              </h2>
+              <p class="text-sm sm:text-base md:text-lg text-slate-300 font-semibold tracking-wide uppercase font-mono">
+                ${personal.title || "Subject Matter Developer"}
+              </p>
+              <p class="text-xs sm:text-sm text-slate-400 max-w-2xl leading-relaxed">
+                ${personal.summary || "Add your summary details directly inside the CraftCV editor inputs to dynamically construct this digital web portfolio."}
+              </p>
+
+              <!-- Social/Contact Badges Links -->
+              <div class="flex flex-wrap justify-center sm:justify-start gap-3.5 text-xs text-slate-300 font-mono pt-2">
+                ${personal.email ? `<span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">✉️ <a href="mailto:${personal.email}" class="hover:underline">${personal.email}</a></span>` : ""}
+                ${personal.phone ? `<span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">📞 ${personal.phone}</span>` : ""}
+                ${personal.location ? `<span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">📍 ${personal.location}</span>` : ""}
+                ${personal.githubUrl ? `<span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg"><a href="${personal.githubUrl}" target="_blank" class="text-${themePrefix}-400 hover:text-white font-bold">📂 GitHub</a></span>` : ""}
+                ${personal.linkedinUrl ? `<span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg"><a href="${personal.linkedinUrl}" target="_blank" class="text-${themePrefix}-400 hover:text-white font-bold">👔 LinkedIn</a></span>` : ""}
+              </div>
+            </div>
+          </div>
+
+          <!-- Main structural grids split -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 pt-12">
+            
+            <!-- Timeline details column -->
+            <div class="lg:col-span-8 space-y-12">
+              
+              <!-- History timeline section -->
+              ${experiences.length > 0 ? `
+                <div class="space-y-6">
+                  <h3 class="text-md sm:text-lg font-bold uppercase tracking-wider font-space text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded bg-${themePrefix}-500 inline-block"></span>
+                    Professional Work History
+                  </h3>
+                  <div class="space-y-6">
+                    ${listExpHTML}
+                  </div>
+                </div>
+              ` : `
+                <div class="border border-dashed border-slate-800 rounded-xl p-8 text-center text-slate-500 text-xs">
+                  Provide work position logs under 'Work History Details' to preview career progress.
+                </div>
+              `}
+
+              <!-- Engineering Projects Section -->
+              ${projects.length > 0 ? `
+                <div class="space-y-6">
+                  <h3 class="text-md sm:text-lg font-bold uppercase tracking-wider font-space text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded bg-${themePrefix}-500 inline-block"></span>
+                    Portfolio Projects
+                  </h3>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    ${listProjectsHTML}
+                  </div>
+                </div>
+              ` : ""}
+
+            </div>
+
+            <!-- Stats & Sidebar detail columns -->
+            <div class="lg:col-span-4 space-y-8">
+              
+              <!-- Skill pill badges -->
+              ${skills.length > 0 ? `
+                <div class="border border-slate-850 rounded-2xl bg-slate-950/20 p-6 space-y-4">
+                  <h3 class="text-xs font-bold uppercase tracking-widest text-white font-space">Skill Set Matrix</h3>
+                  <div class="flex flex-wrap gap-1.5">
+                    ${skills.map(s => `<span class="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">${s}</span>`).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Education card timeline -->
+              ${education.length > 0 ? `
+                <div class="space-y-4">
+                  <h3 class="text-xs font-bold uppercase tracking-widest text-white font-space">Education Record</h3>
+                  <div class="space-y-3">
+                    ${listEduHTML}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Certifications Badges lists -->
+              ${certifications.length > 0 ? `
+                <div class="p-5 border border-slate-850 rounded-xl bg-slate-950/20 space-y-3">
+                  <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-widest font-mono">CERTIFICATES & BADGES</span>
+                  <ul class="text-xs space-y-3 font-mono text-slate-300">
+                    ${listCertificationsHTML}
+                  </ul>
+                </div>
+              ` : ""}
+
+              <!-- Languages -->
+              ${languages.length > 0 ? `
+                <div class="space-y-3">
+                  <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-widest font-mono">LANGUAGES SPOKEN</span>
+                  <div class="grid grid-cols-2 gap-2 text-xs">
+                    ${listLanguagesHTML}
+                  </div>
+                </div>
+              ` : ""}
+
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    // PREVIEW RENDERER: CLASSICAL CV (LIGHT THEME HIGH-FIDELITY PRINTABLE LAYOUT)
+    function generateClassicalCVHtml() {
+      const { personal, experiences, education, projects, skills, languages, certifications } = resumeData;
+      const activeColor = colorsMap[styleSettings.accentColor] || colorsMap.indigo;
+      const themePrefix = styleSettings.accentColor;
+
+      const densityKey = styleSettings.density || "compact";
+      const d = densityMap[densityKey] || densityMap.compact;
+
+      // Handle custom typography pairing link styles
+      const fontClass = {
+        Inter: "font-sans",
+        "Space Grotesk": "font-space",
+        "Playfair Display": "font-serif",
+        "JetBrains Mono": "font-mono"
+      }[styleSettings.fontFamily] || "font-sans";
+
+      const photoImg = personal.photoUrl ? `
+        <img 
+          src="${personal.photoUrl}" 
+          alt="${personal.fullName}" 
+          class="${d.imgSize} rounded-full object-cover border-2 border-${activeColor.primary} shadow-md shrink-0 focus:outline-none" 
+        />
+      ` : "";
+
+      const contactLinksHTML = [
+        personal.email ? `<span class="flex items-center gap-1.5 cursor-pointer">✉️ <a href="mailto:${personal.email}" class="hover:underline">${personal.email}</a></span>` : "",
+        personal.phone ? `<span class="flex items-center gap-1.5">📞 <span>${personal.phone}</span></span>` : "",
+        personal.location ? `<span class="flex items-center gap-1.5">📍 <span>${personal.location}</span></span>` : "",
+        personal.portfolioUrl ? `<span class="flex items-center gap-1.5">🌐 <a href="${personal.portfolioUrl}" target="_blank" class="hover:underline">${personal.portfolioUrl}</a></span>` : "",
+        personal.githubUrl ? `<span class="flex items-center gap-1.5">📂 <a href="${personal.githubUrl}" target="_blank" class="hover:underline">GitHub</a></span>` : "",
+        personal.linkedinUrl ? `<span class="flex items-center gap-1.5">👔 <a href="${personal.linkedinUrl}" target="_blank" class="hover:underline">LinkedIn</a></span>` : ""
+      ].filter(Boolean).join("");
+
+      // Custom templates switches
+      if (styleSettings.templateId === "executive-serif") {
+        return `
+          <div class="w-full bg-white text-slate-900 rounded-2xl shadow-2xl ${d.containerPad} border border-slate-200 min-h-[1050px] ${fontClass} text-slate-950" style="${d.printPadding || ''}">
+            <!-- Header module centered elegant -->
+            <div class="text-center border-b ${d.headerPad}">
+              ${personal.photoUrl ? `
+                <div class="flex justify-center mb-3">
+                  <img src="${personal.photoUrl}" alt="${personal.fullName}" class="${d.imgSize} rounded-full object-cover border border-slate-300 shadow-sm" />
+                </div>
+              ` : ""}
+              <h1 class="${d.titleSize} font-extrabold tracking-tight text-slate-950 font-serif italic">${personal.fullName || "Your Full Name"}</h1>
+              <p class="text-[10px] uppercase tracking-widest text-[#4f46e5] font-bold mt-1.5 font-sans">${personal.title || "Your Professional Title"}</p>
+              
+              <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-slate-500 text-[10.5px] mt-2.5 font-sans">
+                ${contactLinksHTML}
+              </div>
+
+              ${personal.summary ? `
+                <p class="mt-3 text-slate-750 leading-relaxed text-xs max-w-2xl mx-auto italic font-sans border-t border-slate-100 pt-2.5">
+                  "${personal.summary}"
+                </p>
+              ` : ""}
+            </div>
+
+            <!-- Single Column Editorial Flow -->
+            <div class="${d.spaceSection} max-w-3xl mx-auto font-sans">
+              <!-- Skills -->
+              ${skills.length > 0 ? `
+                <div>
+                  <h2 class="font-serif border-b-2 border-slate-800 text-slate-950 text-xs font-bold tracking-widest uppercase pb-1 mb-1.5">Core Competencies</h2>
+                  <p class="text-[11.5px] text-slate-700 tracking-tight leading-relaxed font-sans">${skills.join(" • ")}</p>
+                </div>
+              ` : ""}
+
+              <!-- Experience -->
+              ${experiences.length > 0 ? `
+                <div>
+                  <h2 class="font-serif border-b-2 border-slate-800 text-slate-950 text-xs font-bold tracking-widest uppercase pb-1 mb-2">Professional Experience</h2>
+                  <div class="${d.itemSpacing}">
+                    ${experiences.map(exp => `
+                      <div class="pb-1.5 last:pb-0">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-0.5">
+                          <span class="font-bold text-slate-900 text-xs sm:text-sm whitespace-normal">${exp.role} — <span class="font-semibold text-slate-705 italic">${exp.company}</span></span>
+                          <span class="text-[11px] text-slate-500 shrink-0">${exp.startDate} – ${exp.current ? "Present" : exp.endDate}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 italic mb-1">${exp.location || ""}</p>
+                        <ul class="list-disc pl-4 text-[11.5px] text-slate-750 space-y-0.5">
+                          ${exp.bullets ? exp.bullets.map(b => `<li>${b}</li>`).join("") : ""}
+                        </ul>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Projects -->
+              ${projects.length > 0 ? `
+                <div>
+                  <h2 class="font-serif border-b-2 border-slate-800 text-slate-950 text-xs font-bold tracking-widest uppercase pb-1 mb-2">Relevant Projects</h2>
+                  <div class="${d.itemSpacing}">
+                    ${projects.map(p => `
+                      <div class="pb-1 last:pb-0">
+                        <div class="flex justify-between items-baseline">
+                          <span class="font-bold text-slate-900 text-[11.5px] sm:text-xs">${p.title}</span>
+                          ${p.link ? `<span class="text-[10px] text-[#4f46e5] break-all">${p.link}</span>` : ""}
+                        </div>
+                        <p class="text-[11.5px] text-slate-600 mt-0.5 leading-relaxed">${p.description}</p>
+                        ${p.technologies ? `<p class="text-[9.5px] text-slate-400 italic font-mono mt-0.5">${p.technologies}</p>` : ""}
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Education -->
+              ${education.length > 0 ? `
+                <div>
+                  <h2 class="font-serif border-b-2 border-slate-800 text-slate-950 text-xs font-bold tracking-widest uppercase pb-1 mb-2">Academic History</h2>
+                  <div class="${d.itemSpacing}">
+                    ${education.map(edu => `
+                      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                        <div class="text-[11px] sm:text-xs">
+                          <span class="font-bold text-slate-900">${edu.degree} in ${edu.fieldOfStudy}</span>
+                          <span class="text-slate-400 mx-1">•</span>
+                          <span class="text-slate-700">${edu.institution}</span>
+                        </div>
+                        <span class="text-xs text-slate-500 shrink-0">${edu.startDate} - ${edu.endDate}</span>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- End Extra Grids -->
+              <div class="grid grid-cols-2 gap-4">
+                ${certifications.length > 0 ? `
+                  <div>
+                    <h3 class="font-serif border-b-2 border-slate-800 text-xs font-bold uppercase tracking-wider pb-1 mb-1.5">Certifications</h3>
+                    <ul class="text-[10.5px] space-y-0.5 text-slate-700">
+                      ${certifications.map(c => `<li><strong>${c.name}</strong> - <span class="text-slate-500">${c.issuer}</span></li>`).join("")}
+                    </ul>
+                  </div>
+                ` : ""}
+
+                ${languages.length > 0 ? `
+                  <div>
+                    <h3 class="font-serif border-b-2 border-slate-800 text-xs font-bold uppercase tracking-wider pb-1 mb-1.5">Languages</h3>
+                    <ul class="text-[10.5px] space-y-0.5 text-slate-700">
+                      ${languages.map(l => `<li><strong>${l.name}</strong> - <span class="text-slate-500">${l.proficiency}</span></li>`).join("")}
+                    </ul>
+                  </div>
+                ` : ""}
+              </div>
+
+            </div>
+          </div>
+        `;
+      }
+
+      if (styleSettings.templateId === "creative-gradient") {
+        const activeColor = colorsMap[styleSettings.accentColor] || colorsMap.indigo;
+        const textAccent = `text-${styleSettings.accentColor}-401 text-${styleSettings.accentColor}-400`;
+        const textAccentText = `text-${styleSettings.accentColor}-600`;
+        return `
+          <div class="w-full bg-white text-slate-900 rounded-2xl shadow-2xl border border-slate-200 min-h-[1050px] ${fontClass} overflow-hidden font-sans transition-all duration-350 flex" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
+            <div class="grid grid-cols-12 w-full min-h-[1050px]">
+              
+              <!-- LEFT SIDEBAR -->
+              <div class="col-span-4 bg-[#1a2530] text-slate-100 p-6 flex flex-col gap-6" style="background-color: #1a2530 !important; color: #f1f5f9 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact;">
+                <div class="flex flex-col items-center text-center gap-3 pt-3">
+                  <div class="relative w-24 h-24 rounded-full overflow-hidden border-4 border-white bg-[#121a22] flex items-center justify-center shadow-lg">
+                    ${personal.photoUrl ? `
+                      <img src="${personal.photoUrl}" alt="${personal.fullName}" class="w-full h-full object-cover" />
+                    ` : `
+                      <span class="text-xl font-bold uppercase tracking-widest text-slate-400 font-mono">
+                        ${personal.fullName ? personal.fullName.substring(0, 2) : "CV"}
+                      </span>
+                    `}
+                  </div>
+                  
+                  <div>
+                    <h1 class="text-base font-bold tracking-tight text-white">${personal.fullName || "Your Name"}</h1>
+                    <p class="text-[10px] font-semibold uppercase tracking-wider ${textAccent}">${personal.title || "Your Profession"}</p>
+                  </div>
+                </div>
+
+                <!-- CONTACT -->
+                ${(personal.email || personal.phone || personal.location) ? `
+                  <div class="space-y-2">
+                    <h3 class="text-[10px] font-bold tracking-widest text-white uppercase border-b border-white/10 pb-0.5">Contact</h3>
+                    <div class="space-y-1.5 text-[11px] text-slate-300">
+                      ${personal.phone ? `<div class="flex items-center gap-2">📞 <span>${personal.phone}</span></div>` : ""}
+                      ${personal.email ? `<div class="flex items-center gap-2 overflow-hidden text-ellipsis select-all">✉️ <span class="truncate">${personal.email}</span></div>` : ""}
+                      ${personal.location ? `<div class="flex items-center gap-2">📍 <span class="truncate">${personal.location}</span></div>` : ""}
+                      ${personal.portfolioUrl ? `<div class="flex items-center gap-2">🌐 <span class="truncate">${personal.portfolioUrl}</span></div>` : ""}
+                      ${personal.linkedinUrl ? `<div class="flex items-center gap-2 text-[10px]">👔 <span class="truncate opacity-80">LinkedIn</span></div>` : ""}
+                      ${personal.githubUrl ? `<div class="flex items-center gap-2 text-[10px]">📂 <span class="truncate opacity-80">GitHub</span></div>` : ""}
+                    </div>
+                  </div>
+                ` : ""}
+
+                <!-- SKILLS -->
+                ${skills.length > 0 ? `
+                  <div class="space-y-2">
+                    <h3 class="text-[10px] font-bold tracking-widest text-white uppercase border-b border-white/10 pb-0.5">Skills</h3>
+                    <div class="space-y-1 text-[11px] text-slate-300">
+                      ${skills.map(s => `
+                        <div class="flex items-start">
+                          <span class="mr-2 text-cyan-400 leading-none">○</span>
+                          <span>${s}</span>
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+
+                <!-- LANGUAGES -->
+                ${languages.length > 0 ? `
+                  <div class="space-y-2">
+                    <h3 class="text-[10px] font-bold tracking-widest text-white uppercase border-b border-white/10 pb-0.5">Languages</h3>
+                    <div class="space-y-1 text-[11px] text-slate-300">
+                      ${languages.map(l => `
+                        <div class="flex items-center justify-between">
+                          <div class="flex items-center font-sans text-xs">
+                            <span class="mr-2 text-cyan-400 leading-none">○</span>
+                            <span>${l.name}</span>
+                          </div>
+                          <span class="text-[9px] opacity-60 italic">(${l.proficiency})</span>
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+
+                <!-- CERTIFICATIONS -->
+                ${certifications.length > 0 ? `
+                  <div class="space-y-2">
+                    <h3 class="text-[10px] font-bold tracking-widest text-white uppercase border-b border-white/10 pb-0.5">Certificates</h3>
+                    <div class="space-y-1 text-[9.5px] text-slate-300">
+                      ${certifications.map(c => `
+                        <div class="flex items-start">
+                          <span class="mr-1.5 text-cyan-400 leading-none font-sans">○</span>
+                          <div>
+                            <p class="font-bold text-white line-clamp-1">${c.name}</p>
+                            <p class="text-[8.5px] opacity-75">${c.issuer} • ${c.date}</p>
+                          </div>
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+              </div>
+
+              <!-- RIGHT CONTENT -->
+              <div class="col-span-8 bg-white text-slate-800 p-8 flex flex-col gap-6">
+                <!-- PROFILE -->
+                ${personal.summary ? `
+                  <div class="space-y-1.5">
+                    <h2 class="text-xs font-bold tracking-wider text-slate-900 uppercase border-b border-slate-205 border-slate-200 pb-1">Profile</h2>
+                    <p class="text-slate-655 text-slate-600 text-[11.5px] leading-relaxed pr-2 text-justify">${personal.summary}</p>
+                  </div>
+                ` : ""}
+
+                <!-- WORK EXPERIENCE -->
+                ${experiences.length > 0 ? `
+                  <div class="space-y-2">
+                    <h2 class="text-xs font-bold tracking-wider text-slate-900 uppercase border-b border-slate-205 border-slate-200 pb-1">Work Experience</h2>
+                    <div class="space-y-3.5 pr-2">
+                      ${experiences.map(exp => `
+                        <div class="space-y-0.5">
+                          <div class="flex justify-between items-baseline mb-0.5">
+                            <h4 class="font-bold text-slate-900 text-xs">${exp.role}</h4>
+                            <span class="text-[10px] text-slate-505 text-slate-500 font-medium font-mono whitespace-nowrap ml-2">${exp.startDate} – ${exp.current ? "Present" : exp.endDate}</span>
+                          </div>
+                          <p class="text-[10.5px] text-slate-505 text-slate-500 font-medium">${exp.company} ${exp.location ? `— ${exp.location}` : ""}</p>
+                          <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-655 text-slate-600 mt-1 leading-normal font-sans pr-1">
+                            ${(exp.bullets || []).filter(b => b.trim() !== "").map(bullet => `<li class="text-justify">${bullet}</li>`).join("")}
+                          </ul>
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+
+                <!-- PROJECTS -->
+                ${projects.length > 0 ? `
+                  <div class="space-y-2">
+                    <h2 class="text-xs font-bold tracking-wider text-slate-900 uppercase border-b border-slate-205 border-slate-200 pb-1">Projects</h2>
+                    <div class="grid grid-cols-1 gap-2.5 pr-2">
+                      ${projects.map(proj => `
+                        <div class="p-2.5 border border-slate-150 rounded-lg bg-slate-50/50">
+                          <div class="flex justify-between items-baseline pb-0.5">
+                            <span class="font-bold text-slate-905 text-slate-900 text-xs">${proj.title}</span>
+                            <div class="flex items-center gap-2 text-[9px] font-mono text-slate-400">
+                              ${proj.link ? `<span class="${textAccentText} font-sans">Demo</span>` : ""}
+                              ${proj.github ? `<span class="${textAccentText} font-sans">GitHub</span>` : ""}
+                            </div>
+                          </div>
+                          <p class="text-[10.5px] text-slate-600 mb-1 leading-relaxed text-justify">${proj.description}</p>
+                          ${(() => {
+                            const techArr = typeof proj.technologies === "string"
+                              ? proj.technologies.split(",").map(item => item.trim()).filter(Boolean)
+                              : (Array.isArray(proj.technologies) ? proj.technologies : []);
+                            return techArr.length > 0 ? `
+                              <div class="flex flex-wrap gap-1">
+                                ${techArr.map(tech => `<span class="text-[8.5px] font-mono bg-white border border-slate-200 text-slate-650 px-1 py-0.1 rounded font-medium">${tech}</span>`).join("")}
+                              </div>
+                            ` : "";
+                          })()}
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+
+                <!-- EDUCATION -->
+                ${education.length > 0 ? `
+                  <div class="space-y-2">
+                    <h2 class="text-xs font-bold tracking-wider text-slate-900 uppercase border-b border-slate-205 border-slate-200 pb-1">Education</h2>
+                    <div class="space-y-3 pr-2">
+                      ${education.map(edu => `
+                        <div class="space-y-0.5">
+                          <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-slate-900 text-xs">${edu.degree} ${edu.fieldOfStudy ? `in ${edu.fieldOfStudy}` : ""}</h4>
+                            <span class="text-[10px] text-slate-505 text-slate-500 font-mono whitespace-nowrap ml-2">${edu.startDate} – ${edu.current ? "Present" : edu.endDate}</span>
+                          </div>
+                          <div class="flex justify-between text-[11px] text-slate-505 text-slate-500 italic">
+                            <span>${edu.institution} ${edu.location ? `— ${edu.location}` : ""}</span>
+                            ${edu.score ? `<span class="text-slate-500 font-mono not-italic font-semibold text-[10px]">GPA: ${edu.score}</span>` : ""}
+                          </div>
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+              </div>
+
+            </div>
+          </div>
+        `;
+      }
+
+      if (styleSettings.templateId === "minimalist-tech") {
+        return `
+          <div class="w-full bg-white text-slate-900 rounded-2xl shadow-2xl ${d.containerPad} border border-slate-200 min-h-[1050px] ${fontClass} text-slate-900 font-mono" style="${d.printPadding || ''}">
+            <!-- Header banner Retro System Code -->
+            <div class="border border-slate-400 p-4 mb-4 rounded relative overflow-hidden bg-slate-50/50">
+              <div class="absolute top-0 right-0 p-1.5 text-[8px] font-mono text-slate-400 uppercase tracking-widest select-none font-bold">
+                SYSTEM_RECORD // ID
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                ${personal.photoUrl ? `
+                  <img src="${personal.photoUrl}" alt="${personal.fullName}" class="${d.imgSize} rounded object-cover border border-slate-400 shrink-0" />
+                ` : ""}
+                <div class="flex-1 w-full text-center sm:text-left space-y-1.5">
+                  <h1 class="${d.titleSize} font-extrabold tracking-tight text-slate-955 uppercase font-mono">${personal.fullName || "YOUR_NAME"}</h1>
+                  <p class="text-[10px] font-bold text-slate-600 uppercase tracking-tight flex items-center justify-center sm:justify-start gap-1.5 mb-1 block">
+                    <span>${personal.title || "SYSTEMS DESIGNER"}</span>
+                    <span class="text-slate-300">|</span>
+                    <span class="lowercase text-slate-400">${personal.location}</span>
+                  </p>
+                  
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 text-[10px] text-slate-550 border-t border-dashed border-slate-300 pt-2 mt-1.5 font-mono">
+                    ${contactLinksHTML}
+                  </div>
+                </div>
+              </div>
+
+              ${personal.summary ? `
+                <div class="mt-2.5 pt-2 border-t border-slate-200">
+                  <span class="text-[8px] font-mono font-bold text-slate-400 block mb-0.5">SYSTEM_SUMMARY:</span>
+                  <p class="text-slate-705 text-[11px] leading-relaxed pl-2 border-l-2 border-slate-400 font-sans">${personal.summary}</p>
+                </div>
+              ` : ""}
+            </div>
+
+            <!-- Single Column Technical Timeline -->
+            <div class="${d.spaceSection}">
+              <!-- Skills pills -->
+              ${skills.length > 0 ? `
+                <div>
+                  <h2 class="border-b border-slate-400 text-slate-950 text-xs font-extrabold pb-0.5 mb-1.5 uppercase font-mono">01. TECHNOLOGY_MATRIX</h2>
+                  <div class="flex flex-wrap gap-1">
+                    ${skills.map(s => `<span class="text-[10px] px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-750 font-mono">${s}</span>`).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Experience -->
+              ${experiences.length > 0 ? `
+                <div>
+                  <h2 class="border-b border-slate-400 text-slate-955 text-xs font-extrabold pb-0.5 mb-1.5 uppercase font-mono">02. WORK_HISTORY</h2>
+                  <div class="${d.itemSpacing}">
+                    ${experiences.map(exp => `
+                      <div class="pb-1 last:pb-0">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-0.5 text-xs font-mono font-bold text-slate-900">
+                          <span>${exp.role} @ ${exp.company}</span>
+                          <span class="text-[11px] text-slate-550 font-medium">${exp.startDate} - ${exp.current ? "Present" : exp.endDate}</span>
+                        </div>
+                        <p class="text-[9px] text-slate-400 mb-1 uppercase">${exp.location || ""}</p>
+                        <ul class="list-disc pl-4 text-[11px] text-slate-700 font-sans space-y-0.5">
+                          ${exp.bullets ? exp.bullets.map(b => `<li>${b}</li>`).join("") : ""}
+                        </ul>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Projects -->
+              ${projects.length > 0 ? `
+                <div>
+                  <h2 class="border-b border-slate-400 text-slate-950 text-xs font-extrabold pb-0.5 mb-1.5 uppercase font-mono">03. ACTIVE_PROJECTS</h2>
+                  <div class="${d.itemSpacing} font-mono animate-none">
+                    ${projects.map(p => `
+                      <div class="p-2 border border-slate-200 rounded">
+                        <div class="flex justify-between font-bold text-slate-900 text-[10.5px]">
+                          <span>// ${p.title}</span>
+                          ${p.link ? `<span class="text-[9.5px] text-slate-500 lowercase font-medium">${p.link}</span>` : ""}
+                        </div>
+                        <p class="text-[11px] text-slate-650 mt-0.5 font-sans leading-relaxed">${p.description}</p>
+                        ${p.technologies ? `<p class="text-[9px] text-slate-500 font-mono mt-1 uppercase tracking-tight">STACK_USED: ${p.technologies}</p>` : ""}
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Education -->
+              ${education.length > 0 ? `
+                <div>
+                  <h2 class="border-b border-slate-400 text-slate-955 text-xs font-extrabold pb-0.5 mb-1.5 uppercase font-mono">04. EDUCATION</h2>
+                  <div class="${d.itemSpacing} text-xs">
+                    ${education.map(edu => `
+                      <div class="flex justify-between items-baseline font-mono text-slate-900">
+                        <div>
+                          <strong class="font-extrabold">${edu.degree} in ${edu.fieldOfStudy}</strong>
+                          <span class="text-slate-500">- ${edu.institution}</span>
+                        </div>
+                        <span class="text-xs text-slate-500">${edu.startDate} - ${edu.endDate}</span>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+            </div>
+          </div>
+        `;
+      }
+
+      // Default: slate-professional
+      return `
+        <div class="w-full bg-white text-slate-900 rounded-2xl shadow-2xl ${d.containerPad} border border-slate-200 min-h-[1050px] ${fontClass} text-slate-900 transition-all duration-350" style="${d.printPadding || ''}">
+          
+          <!-- Header module -->
+          <div class="border-b-2 pb-4 mb-4">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+              ${photoImg}
+              <div class="flex-1 w-full text-center sm:text-left">
+                <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-2">
+                  <div>
+                    <h1 class="${d.titleSize} font-extrabold tracking-tight text-slate-955 font-space">${personal.fullName || "Your Full Name"}</h1>
+                    <p class="text-sm font-semibold mt-0.5 text-${themePrefix}-600 uppercase tracking-wide font-space">${personal.title || "Your Professional Title"}</p>
+                  </div>
+                  <div class="flex flex-wrap gap-y-0.5 gap-x-3 text-[11px] text-slate-500 max-w-sm lg:text-right lg:justify-end justify-center sm:justify-start">
+                    ${contactLinksHTML}
+                  </div>
+                </div>
+              </div>
+            </div>
+            ${personal.summary ? `
+              <p class="mt-3 text-slate-650 leading-relaxed text-xs sm:text-xs italic border-l-2 pl-3 border-slate-200">
+                ${personal.summary}
+              </p>
+            ` : ""}
+          </div>
+
+          <!-- Main structural grids split -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Left block -->
+            <div class="md:col-span-8 ${d.spaceSection}">
+              
+              <!-- Experiences -->
+              ${experiences.length > 0 ? `
+                <div>
+                  <h2 class="font-space border-b-2 ${activeColor.cvSectionHeader} text-slate-955 text-xs font-bold tracking-wider uppercase pb-0.5 mb-2.5">Professional History</h2>
+                  <div class="${d.itemSpacing}">
+                    ${experiences.map(exp => `
+                      <div class="pb-1 last:pb-0">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-0.5">
+                          <div>
+                            <span class="font-extrabold text-slate-950 text-xs sm:text-sm">${exp.role}</span>
+                            <span class="text-slate-400 mx-1">•</span>
+                            <span class="font-bold text-slate-700 text-xs sm:text-sm whitespace-normal">${exp.company}</span>
+                          </div>
+                          <span class="text-[10.5px] text-slate-500 shrink-0 select-none">${exp.startDate} – ${exp.current ? "Present" : exp.endDate}</span>
+                        </div>
+                        ${exp.location ? `<p class="text-[10px] text-slate-450 pb-0.5">${exp.location}</p>` : ""}
+                        <ul class="list-disc pl-4 text-[11.5px] text-slate-650 space-y-0.5">
+                          ${exp.bullets ? exp.bullets.map(b => `<li>${b}</li>`).join("") : ""}
+                        </ul>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Projects -->
+              ${projects.length > 0 ? `
+                <div>
+                  <h2 class="font-space border-b-2 ${activeColor.cvSectionHeader} text-slate-955 text-xs font-bold tracking-wider uppercase pb-0.5 mb-2.5">Key Projects</h2>
+                  <div class="grid grid-cols-1 gap-2.5 font-sans">
+                    ${projects.map(proj => `
+                      <div class="border border-slate-100 rounded-lg p-2.5 bg-slate-50/50">
+                        <div class="flex justify-between items-baseline mb-0.5">
+                          <span class="font-bold text-slate-900 text-xs">${proj.title}</span>
+                          ${proj.link ? `<span class="text-[9.5px] text-${themePrefix}-600 break-all">${proj.link}</span>` : ""}
+                        </div>
+                        <p class="text-[11px] text-slate-650 mb-1 leading-relaxed">${proj.description}</p>
+                        ${proj.technologies ? `<p class="text-[9.5px] text-slate-450 font-mono tracking-tight">${proj.technologies}</p>` : ""}
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+            </div>
+
+            <!-- Right Sidebar Columns detail -->
+            <div class="md:col-span-4 ${d.spaceSection}">
+              
+              <!-- Core Competencies -->
+              ${skills.length > 0 ? `
+                <div>
+                  <h2 class="font-space border-b-2 ${activeColor.cvSectionHeader} text-slate-955 text-xs font-bold tracking-wider uppercase pb-0.5 mb-2.5">Core skillset</h2>
+                  <div class="flex flex-wrap gap-1">
+                    ${skills.map(s => `<span class="text-[10px] px-1.5 py-0.5 rounded font-semibold border border-slate-200 bg-slate-50 text-slate-700">${s}</span>`).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Academic School History -->
+              ${education.length > 0 ? `
+                <div>
+                  <h2 class="font-space border-b-2 ${activeColor.cvSectionHeader} text-slate-955 text-xs font-bold tracking-wider uppercase pb-0.5 mb-2.5">Academic logs</h2>
+                  <div class="${d.itemSpacing}">
+                    ${education.map(edu => `
+                      <div class="pb-1 last:pb-0">
+                        <div class="flex justify-between items-baseline mb-0.5">
+                          <span class="font-bold text-slate-955 text-xs">${edu.degree}</span>
+                          <span class="text-[9.5px] text-slate-400 font-mono">${edu.startDate} - ${edu.endDate}</span>
+                        </div>
+                        <p class="text-[10.5px] text-slate-600 font-medium leading-tight">${edu.institution}</p>
+                        ${edu.score ? `<p class="text-[9.5px] text-slate-450 italic mt-0.5">${edu.score}</p>` : ""}
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Certifications list -->
+              ${certifications.length > 0 ? `
+                <div>
+                  <h2 class="font-space border-b-2 ${activeColor.cvSectionHeader} text-slate-955 text-xs font-bold tracking-wider uppercase pb-0.5 mb-2">Certificates</h2>
+                  <div class="space-y-1.5 text-[10.5px] text-slate-605">
+                    ${certifications.map(c => `
+                      <div>
+                        <p class="font-bold text-slate-805 leading-tight">${c.name}</p>
+                        <p class="text-[9px] text-slate-400">${c.issuer} (${c.date})</p>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- Languages spoke list -->
+              ${languages.length > 0 ? `
+                <div>
+                  <h2 class="font-space border-b-2 ${activeColor.cvSectionHeader} text-slate-955 text-xs font-bold tracking-wider uppercase pb-0.5 mb-2">Languages</h2>
+                  <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+                    ${languages.map(l => `
+                      <div>
+                        <span class="font-bold text-slate-805">${l.name}</span>
+                        <p class="text-[9.5px] text-slate-450">${l.proficiency}</p>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    // Launch initializers on script startup load
+    window.addEventListener("DOMContentLoaded", () => {
+      initAppState();
+    });
+  </script>
+</body>
+</html>
